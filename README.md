@@ -1,59 +1,55 @@
 # LigaDeportiva2
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.3.
+Proyecto Angular con SSR, Express y preparacion para MongoDB.
 
-## Development server
-
-To start a local development server, run:
+## Desarrollo frontend
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+## Build
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Tests
 
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
+## MongoDB con Express
 
-For end-to-end (e2e) testing, run:
+1. Crea un archivo `.env` a partir de `.env.example`.
+2. Configura `MONGODB_URI` con tu cadena de MongoDB Atlas y `MONGODB_DB_NAME` con el nombre de tu base de datos.
+3. Asegurate de que la IP desde la que ejecutas la app esta permitida en MongoDB Atlas Network Access.
+4. Ejecuta la build:
 
 ```bash
-ng e2e
+npm run build
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+5. Arranca el servidor SSR con Express:
 
-## Additional Resources
+```bash
+npm run serve:ssr:ligaDeportiva2
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Endpoints API
+
+- `GET /api/health`: comprueba si MongoDB esta configurado y si responde.
+- `GET /api/liga-data`: devuelve los datos de la liga desde MongoDB. Si Mongo no esta configurado, devuelve los datos semilla.
+- `POST /api/admin/seed`: inserta en MongoDB los datos semilla del proyecto.
+
+## Flujo recomendado
+
+1. Crea un cluster en MongoDB Atlas.
+2. Crea un usuario de base de datos con permisos sobre tu cluster.
+3. Permite tu IP en MongoDB Atlas Network Access.
+4. Rellena `.env` con la URI `mongodb+srv` y el nombre de base de datos.
+5. Ejecuta `npm run build`.
+6. Ejecuta `npm run serve:ssr:ligaDeportiva2`.
+7. Llama a `POST http://localhost:4000/api/admin/seed`.
+8. Comprueba `GET http://localhost:4000/api/liga-data`.

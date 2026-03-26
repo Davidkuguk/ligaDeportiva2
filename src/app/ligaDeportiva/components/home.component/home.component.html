@@ -1,0 +1,54 @@
+<app-noticias></app-noticias>
+
+<section class="container pb-5">
+  <div class="row g-4 align-items-stretch">
+    <div class="col-12 col-lg-4">
+      <div class="card card-surface h-100 border-0 shadow-sm">
+        <div class="card-body p-4">
+          <p class="section-kicker mb-2">Agenda</p>
+          <h2 class="h3 mb-3">Partidos de la semana</h2>
+          <p class="text-body-secondary mb-4">
+            Consulta los cruces mas inmediatos y revisa el estado de la competicion desde una
+            sola pantalla.
+          </p>
+          <a routerLink="/resultados" class="btn fondoMorado text-white">Ver resultados</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-4">
+      <div class="home-highlight rounded-4 h-100 p-4 p-md-5">
+        <p class="section-kicker text-white-50 mb-2">Temporada 2025/2026</p>
+        <h2 class="mb-3">Liga deportiva del instituto</h2>
+        <p class="mb-4 text-white-50">
+          Equipos, clasificaciones, arbitros y noticias organizados con una estructura Angular
+          preparada para conectar con servicios mas adelante.
+        </p>
+        <a routerLink="/equipos" class="btn btn-warning fw-semibold">Explorar equipos</a>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-4">
+      <div class="card card-surface h-100 border-0 shadow-sm">
+        <div class="card-body p-4">
+          <p class="section-kicker mb-2">Resumen</p>
+          <h2 class="h3 mb-3">Ultimos marcadores</h2>
+          <div class="d-flex flex-column gap-3">
+            @for (result of featuredResults; track result.localTeam + result.awayTeam) {
+              <div class="result-chip rounded-3 p-3">
+                <div class="d-flex justify-content-between gap-3 fw-semibold text-dark">
+                  <span>{{ result.localTeam }}</span>
+                  <span>{{ result.score }}</span>
+                  <span>{{ result.awayTeam }}</span>
+                </div>
+                <p class="mb-0 mt-2 text-body-secondary small">
+                  {{ result.competition }} · {{ result.round }}
+                </p>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

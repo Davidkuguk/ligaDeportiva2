@@ -1,0 +1,28 @@
+<main class="container py-5">
+  <div class="row g-4">
+    <div class="col-12">
+      <app-usuario-resumen
+        [firstName]="firstName"
+        [teamName]="teamName"
+        [totalMatches]="matches.length">
+      </app-usuario-resumen>
+    </div>
+    <div class="col-12" *ngIf="errorMessage">
+      <div class="alert alert-danger mb-0" role="alert">{{ errorMessage }}</div>
+    </div>
+    <div class="col-12" *ngIf="successMessage">
+      <div class="alert alert-success mb-0" role="alert">{{ successMessage }}</div>
+    </div>
+    <div class="col-12 col-xl-5">
+      <app-captain-team-form
+        [captainUsername]="username"
+        [canCreate]="canCreateTeam()"
+        [isSaving]="isCreatingTeam"
+        (createTeam)="createTeam($event)">
+      </app-captain-team-form>
+    </div>
+    <div class="col-12">
+      <app-usuario-match-list [matches]="matches" [teamName]="teamName"></app-usuario-match-list>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,36 @@
+<section class="container py-4" aria-labelledby="noticias-title">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+      <p class="section-kicker mb-1">Actualidad</p>
+      <h2 id="noticias-title" class="mb-0">Noticias destacadas</h2>
+    </div>
+    <span class="badge text-bg-light">Liga del instituto</span>
+  </div>
+
+  <div class="row g-3">
+    @for (item of news; track item.id) {
+      <article class="col-12 col-lg-4">
+        <div class="card news-card h-100 border-0 shadow-sm overflow-hidden">
+          <img [src]="item.image" [alt]="item.alt" class="news-image">
+          <div class="card-body d-flex flex-column">
+            <h3 class="h4 text-dark mb-2">{{ item.title }}</h3>
+            <p class="text-body-secondary mb-0">{{ item.summary }}</p>
+          </div>
+        </div>
+      </article>
+    }
+  </div>
+
+  <div class="hero-strip mt-4 rounded-4 p-4 p-md-5">
+    <div class="row align-items-center g-4">
+      <div class="col-12 col-md-8">
+        <p class="section-kicker text-white-50 mb-2">Proxima cita</p>
+        <h3 class="mb-2">{{ featuredArticle.title }}</h3>
+        <p class="mb-0 text-white-50">{{ featuredArticle.summary }}</p>
+      </div>
+      <div class="col-12 col-md-4 text-md-end">
+        <a routerLink="/contacto" class="btn btn-warning fw-semibold px-4">Inscripcion y contacto</a>
+      </div>
+    </div>
+  </div>
+</section>

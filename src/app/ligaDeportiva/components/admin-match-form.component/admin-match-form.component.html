@@ -1,0 +1,66 @@
+<section class="card shadow-sm border-0">
+  <div class="card-body p-4">
+    <h2 class="h4 colorMorado mb-3">{{ selectedMatch ? 'Editar partido' : 'Crear partido' }}</h2>
+    <form class="row g-3" [formGroup]="matchForm" (ngSubmit)="submit()">
+      <div class="col-12 col-md-6">
+        <label for="sport" class="form-label">Deporte</label>
+        <input id="sport" type="text" class="form-control" formControlName="sport">
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="competition" class="form-label">Competicion</label>
+        <input id="competition" type="text" class="form-control" formControlName="competition">
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="localTeam" class="form-label">Equipo local</label>
+        <select id="localTeam" class="form-select" formControlName="localTeam">
+          <option value="">Selecciona equipo</option>
+          <option *ngFor="let team of teams" [value]="team">{{ team }}</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="awayTeam" class="form-label">Equipo visitante</label>
+        <select id="awayTeam" class="form-select" formControlName="awayTeam">
+          <option value="">Selecciona equipo</option>
+          <option *ngFor="let team of teams" [value]="team">{{ team }}</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="round" class="form-label">Jornada</label>
+        <input id="round" type="text" class="form-control" formControlName="round">
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="date" class="form-label">Fecha</label>
+        <input id="date" type="date" class="form-control" formControlName="date">
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="refereeUsername" class="form-label">Arbitro</label>
+        <select id="refereeUsername" class="form-select" formControlName="refereeUsername">
+          <option value="">Sin asignar</option>
+          <option *ngFor="let referee of referees" [value]="referee.username">{{ referee.name }}</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="venue" class="form-label">Ubicacion</label>
+        <input id="venue" type="text" class="form-control" formControlName="venue">
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="status" class="form-label">Estado</label>
+        <select id="status" class="form-select" formControlName="status">
+          <option value="scheduled">Programado</option>
+          <option value="finished">Finalizado</option>
+          <option value="postponed">Aplazado</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="score" class="form-label">Resultado</label>
+        <input id="score" type="text" class="form-control" formControlName="score" placeholder="3-1">
+      </div>
+      <div class="col-12 d-flex gap-2">
+        <button type="submit" class="btn fondoMorado text-white registro-submit-btn" [disabled]="isSaving">
+          {{ isSaving ? 'Guardando...' : (selectedMatch ? 'Actualizar partido' : 'Crear partido') }}
+        </button>
+        <button type="button" class="btn btn-outline-secondary" (click)="resetForm()">Limpiar</button>
+      </div>
+    </form>
+  </div>
+</section>

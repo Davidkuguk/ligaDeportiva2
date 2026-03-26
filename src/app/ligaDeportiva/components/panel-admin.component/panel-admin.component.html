@@ -1,0 +1,35 @@
+<main class="container py-5">
+  <div class="row g-4">
+    <div class="col-12">
+      <app-admin-resumen [username]="username" [totalMatches]="matches.length"></app-admin-resumen>
+    </div>
+    <div class="col-12" *ngIf="errorMessage">
+      <div class="alert alert-danger mb-0" role="alert">{{ errorMessage }}</div>
+    </div>
+    <div class="col-12 col-xl-5">
+      <app-admin-match-form
+        [teams]="teams"
+        [referees]="referees"
+        [selectedMatch]="selectedMatch"
+        [isSaving]="isSaving"
+        (saveMatch)="saveMatch($event)"
+        (clearSelection)="clearSelection()">
+      </app-admin-match-form>
+    </div>
+    <div class="col-12 col-xl-7">
+      <app-admin-match-list
+        [matches]="matches"
+        [selectedMatchId]="selectedMatch?.id ?? null"
+        (editMatch)="selectMatch($event)">
+      </app-admin-match-list>
+    </div>
+    <div class="col-12 col-xl-5">
+      <app-admin-user-team-form
+        [users]="users"
+        [teams]="teams"
+        [isSaving]="isAssigningTeam"
+        (assignUser)="assignUserTeam($event)">
+      </app-admin-user-team-form>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,32 @@
+<main class="container py-4">
+  <div class="mb-4">
+    <p class="section-kicker mb-1">Plantilla individual</p>
+    <h1 class="h2 mb-0">Jugadores</h1>
+  </div>
+
+  <div class="row g-4">
+    @for (player of players; track player.name) {
+      <section class="col-12 col-lg-4">
+        <article class="card card-surface h-100 border-0 shadow-sm">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between gap-3 mb-3">
+              <div>
+                <h2 class="h3 text-dark mb-1">{{ player.name }}</h2>
+                <p class="text-body-secondary mb-0">{{ player.team }} · {{ player.competition }}</p>
+              </div>
+              <span class="display-6 colorMorado fw-bold">#{{ player.number }}</span>
+            </div>
+            <p class="mb-1"><strong>Apodo:</strong> {{ player.nickname }}</p>
+            <p class="mb-3"><strong>Posicion:</strong> {{ player.position }}</p>
+            <h3 class="h6 text-uppercase text-muted">Estadisticas</h3>
+            <ul class="list-group list-group-flush">
+              @for (stat of player.stats; track stat) {
+                <li class="list-group-item px-0 bg-transparent">{{ stat }}</li>
+              }
+            </ul>
+          </div>
+        </article>
+      </section>
+    }
+  </div>
+</main>

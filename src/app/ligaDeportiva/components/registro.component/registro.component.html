@@ -1,0 +1,70 @@
+<main class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-9 col-lg-7">
+            <section class="card shadow-sm border-0">
+                <div class="card-body p-4 p-md-5">
+                    <h1 class="h2 mb-4 colorMorado">Registro</h1>
+                    <form class="row g-3" [formGroup]="registerForm" (ngSubmit)="submit()">
+                        <div class="col-12 col-md-6">
+                            <label for="nombre" class="form-label colorMorado">Nombre</label>
+                            <input id="nombre" type="text" class="form-control" placeholder="Introduce tu nombre"
+                                formControlName="firstName">
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="apellidos" class="form-label colorMorado">Apellidos</label>
+                            <input id="apellidos" type="text" class="form-control"
+                                placeholder="Introduce tus apellidos" formControlName="lastName">
+                        </div>
+                        <div class="col-12">
+                            <label for="username" class="form-label colorMorado">Usuario</label>
+                            <input id="username" type="text" class="form-control"
+                                placeholder="Elige un nombre de usuario" formControlName="username">
+                        </div>
+                        <div class="col-12">
+                            <label for="tipo" class="form-label colorMorado">Tipo de usuario</label>
+                            <select id="tipo" class="form-select" formControlName="tipo">
+                                <option *ngFor="let option of userTypeOptions" [value]="option.value">
+                                    {{ option.label }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="teamName" class="form-label colorMorado">Equipo</label>
+                            <select id="teamName" class="form-select" formControlName="teamName">
+                                <option value="">Sin equipo asignado</option>
+                                <option *ngFor="let team of teamOptions" [value]="team">{{ team }}</option>
+                            </select>
+                            <p class="small text-secondary mb-0 mt-2" *ngIf="isLoadingTeams">Cargando equipos...</p>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="password" class="form-label colorMorado">Contrasena</label>
+                            <input id="password" type="password" class="form-control" placeholder="Crea una clave"
+                                formControlName="password">
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="passwordConfirm" class="form-label colorMorado">Repetir contrasena</label>
+                            <input id="passwordConfirm" type="password" class="form-control"
+                                placeholder="Repite la clave" formControlName="passwordConfirm">
+                        </div>
+                        <div class="col-12">
+                            <p class="mb-0 text-secondary">El alta crea el usuario directamente en MongoDB Atlas.</p>
+                        </div>
+                        <div class="col-12" *ngIf="submitError">
+                            <div class="alert alert-danger mb-0" role="alert">{{ submitError }}</div>
+                        </div>
+                        <div class="col-12" *ngIf="submitSuccess">
+                            <div class="alert alert-success mb-0" role="alert">{{ submitSuccess }}</div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn fondoMorado text-white registro-submit-btn"
+                                [disabled]="isSubmitting" [attr.aria-busy]="isSubmitting">
+                                <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                                <span>{{ isSubmitting ? 'Creando...' : 'Crear cuenta' }}</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </div>
+</main>

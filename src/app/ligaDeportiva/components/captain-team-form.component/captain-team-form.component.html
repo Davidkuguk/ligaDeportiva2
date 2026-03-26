@@ -1,0 +1,25 @@
+<section class="card shadow-sm border-0">
+  <div class="card-body p-4">
+    <h2 class="h4 colorMorado mb-3">Crear equipo</h2>
+    <p class="text-secondary" *ngIf="!canCreate; else formBlock">
+      Solo los capitanes sin equipo asignado pueden crear un equipo nuevo.
+    </p>
+    <ng-template #formBlock>
+      <form class="row g-3" [formGroup]="form" (ngSubmit)="submit()">
+        <div class="col-12">
+          <label for="teamName" class="form-label">Nombre del equipo</label>
+          <input id="teamName" type="text" class="form-control" formControlName="name">
+        </div>
+        <div class="col-12">
+          <label for="teamCompetition" class="form-label">Competicion</label>
+          <input id="teamCompetition" type="text" class="form-control" formControlName="competition">
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn fondoMorado text-white registro-submit-btn" [disabled]="isSaving">
+            {{ isSaving ? 'Creando equipo...' : 'Crear equipo' }}
+          </button>
+        </div>
+      </form>
+    </ng-template>
+  </div>
+</section>

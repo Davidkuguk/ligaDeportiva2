@@ -1,0 +1,28 @@
+<section class="card shadow-sm border-0">
+  <div class="card-body p-4">
+    <h2 class="h4 colorMorado mb-3">Asignar usuario a equipo</h2>
+    <form class="row g-3" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="col-12">
+        <label for="assignUsername" class="form-label">Usuario</label>
+        <select id="assignUsername" class="form-select" formControlName="username">
+          <option value="">Selecciona usuario</option>
+          <option *ngFor="let user of users" [value]="user.username">
+            {{ user.username }} · {{ user.tipo }} · {{ user.teamName || 'Sin equipo' }}
+          </option>
+        </select>
+      </div>
+      <div class="col-12">
+        <label for="assignTeamName" class="form-label">Equipo</label>
+        <select id="assignTeamName" class="form-select" formControlName="teamName">
+          <option value="">Selecciona equipo</option>
+          <option *ngFor="let team of teams" [value]="team">{{ team }}</option>
+        </select>
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn fondoMorado text-white registro-submit-btn" [disabled]="isSaving">
+          {{ isSaving ? 'Asignando...' : 'Asignar equipo' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

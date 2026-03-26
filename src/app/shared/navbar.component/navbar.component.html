@@ -1,0 +1,47 @@
+<nav class="navbar navbar-dark navbar-expand-md">
+    <div class="container">
+        <a routerLink="/home" class="navbar-brand fw-bolder fs-1 fs-md-2 p-0" (click)="closeMenu()">Liga Deportiva</a>
+
+        <button class="navbar-toggler" type="button" aria-controls="menu" [attr.aria-expanded]="isMenuOpen"
+            aria-label="Mostrar/Ocultar menu" (click)="toggleMenu()">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse fs-5" id="menu" [class.show]="isMenuOpen">
+            <ul class="navbar-nav ms-auto mb-2 mb-md-0 align-items-center colorAmarillo">
+                <li class="nav-item hoverBlanco">
+                    <a routerLink="/equipos" routerLinkActive="active" class="nav-link text-reset"
+                        (click)="closeMenu()">Equipos</a>
+                </li>
+                <li class="nav-item hoverBlanco">
+                    <a routerLink="/resultados" routerLinkActive="active" class="nav-link text-reset"
+                        (click)="closeMenu()">Resultados</a>
+                </li>
+                <li class="nav-item hoverBlanco">
+                    <a routerLink="/clasificaciones" routerLinkActive="active" class="nav-link text-reset"
+                        (click)="closeMenu()">Clasificaciones</a>
+                </li>
+                <li class="nav-item hoverBlanco">
+                    <a routerLink="/jugadores" routerLinkActive="active" class="nav-link text-reset"
+                        (click)="closeMenu()">Jugadores</a>
+                </li>
+                <li class="nav-item hoverBlanco">
+                    <a routerLink="/arbitros" routerLinkActive="active" class="nav-link text-reset"
+                        (click)="closeMenu()">Arbitros</a>
+                </li>
+                <li class="nav-item hoverBlanco">
+                    <a routerLink="/contacto" routerLinkActive="active" class="nav-link text-reset"
+                        (click)="closeMenu()">Contacto</a>
+                </li>
+                <li class="nav-item ms-md-3 mt-2 mt-md-0">
+                    <a routerLink="/login" routerLinkActive="active"
+                        class="btn fondoAmarillo colorMorado fw-semibold px-3" (click)="closeMenu()">Login</a>
+                </li>
+                <li class="nav-item ms-md-2 mt-2 mt-md-0">
+                    <a routerLink="/registro" routerLinkActive="active"
+                        class="btn btn-outline-light fw-semibold px-3" (click)="closeMenu()">Registro</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

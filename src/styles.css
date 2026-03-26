@@ -1,1 +1,170 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+
+:root {
+  --fondo-gradiente: linear-gradient(120deg, #2140a5, #6f00b3, #ff5f3d);
+  --color-morado: rgb(38, 18, 90);
+  --fuente-titulo: 'Bebas Neue', sans-serif;
+  --fuente-secundaria: 'Oswald', sans-serif;
+  --color-primario: #fff;
+  --color-secundario: #fcd34d;
+  --color-fuccia: #e91e63;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  background: var(--fondo-gradiente);
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: var(--color-primario);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--color-primario);
+  font-family: var(--fuente-titulo);
+}
+
+p {
+  font-family: var(--fuente-secundaria);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.f-oswald {
+  font-family: var(--fuente-secundaria);
+}
+
+.f-titulo {
+  font-family: var(--fuente-titulo);
+}
+
+nav,
+footer {
+  background: var(--color-morado);
+  font-family: var(--fuente-secundaria);
+  color: var(--color-primario);
+}
+
+.navbar-brand {
+  font-family: var(--fuente-titulo);
+  color: var(--color-primario) !important;
+}
+
+a {
+  color: var(--color-secundario);
+  text-decoration: none;
+}
+
+nav ul li a:hover {
+  color: white;
+}
+
+.hoverBlanco:hover {
+  color: white;
+}
+
+.btnHover:hover {
+  background: var(--color-secundario);
+  color: var(--color-morado) !important;
+  transition: 1s;
+  -webkit-transition: 1s;
+  -moz-transition: 1s;
+  -ms-transition: 1s;
+  -o-transition: 1s;
+}
+
+nav .navbar-brand {
+  font-family: var(--fuente-titulo);
+}
+
+.fondoAmarillo {
+  background: var(--color-secundario);
+}
+
+.colorAmarillo {
+  color: var(--color-secundario);
+}
+
+.fondoFuccia {
+  background: var(--color-fuccia);
+}
+
+.fondoMorado {
+  background: var(--color-morado);
+}
+
+.registro-submit-btn,
+.registro-submit-btn:hover,
+.registro-submit-btn:focus,
+.registro-submit-btn:disabled {
+  background: var(--color-morado);
+  border-color: var(--color-morado);
+  color: #fff;
+}
+
+.registro-submit-btn:disabled {
+  opacity: 1;
+  filter: none;
+  cursor: wait;
+}
+
+.colorMorado {
+  color: var(--color-morado);
+}
+
+footer {
+  margin-top: auto;
+}
+
+.section-kicker {
+  color: var(--color-secundario);
+  font-family: var(--fuente-secundaria);
+  font-size: 0.9rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.card-surface {
+  background: rgba(255, 255, 255, 0.96);
+  color: #1a1a1a;
+}
+
+.hero-strip,
+.home-highlight {
+  background:
+    linear-gradient(135deg, rgba(33, 64, 165, 0.95), rgba(111, 0, 179, 0.9)),
+    radial-gradient(circle at top right, rgba(252, 211, 77, 0.25), transparent 30%);
+}
+
+.news-card,
+.result-chip {
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.news-image,
+.team-image {
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  width: 100%;
+}
+
+@media (max-width: 767.98px) {
+  body {
+    background-attachment: scroll;
+  }
+
+  .navbar-brand {
+    font-size: 2rem !important;
+  }
+}

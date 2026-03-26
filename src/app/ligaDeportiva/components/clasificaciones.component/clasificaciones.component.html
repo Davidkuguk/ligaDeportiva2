@@ -1,0 +1,41 @@
+<main class="container py-4">
+  <div class="mb-4">
+    <p class="section-kicker mb-1">Clasificacion</p>
+    <h1 class="h2 mb-0">Tabla general</h1>
+  </div>
+
+  <div class="table-responsive rounded-4 overflow-hidden shadow-sm">
+    <table class="table table-light table-striped align-middle mb-0">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Pos</th>
+          <th scope="col">Equipo</th>
+          <th scope="col">PJ</th>
+          <th scope="col">G</th>
+          <th scope="col">E</th>
+          <th scope="col">P</th>
+          <th scope="col">GF</th>
+          <th scope="col">GC</th>
+          <th scope="col">DG</th>
+          <th scope="col">PTS</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (standing of standings; track standing.team) {
+          <tr>
+            <td>{{ standing.position }}</td>
+            <td class="fw-semibold">{{ standing.team }}</td>
+            <td>{{ standing.played }}</td>
+            <td>{{ standing.won }}</td>
+            <td>{{ standing.drawn }}</td>
+            <td>{{ standing.lost }}</td>
+            <td>{{ standing.goalsFor }}</td>
+            <td>{{ standing.goalsAgainst }}</td>
+            <td>{{ standing.goalsFor - standing.goalsAgainst }}</td>
+            <td>{{ standing.points }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</main>
