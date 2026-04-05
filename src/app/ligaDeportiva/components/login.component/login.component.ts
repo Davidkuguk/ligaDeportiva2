@@ -41,8 +41,11 @@ export class LoginComponent {
     try {
       const { username, password } = this.loginForm.getRawValue();
       const response = await this.authService.login({ username, password });
+
+      // Guardamos la sesion para poder reutilizar los datos del usuario en los paneles.
       this.sessionService.setSession(response.user);
 
+      // Segun el tipo de usuario, lo mandamos a su panel correspondiente.
       await this.router.navigateByUrl(getRouteByTipo(response.user.tipo));
     } catch (error) {
       this.submitError = getErrorMessage(error);
@@ -54,11 +57,14 @@ export class LoginComponent {
 }
 
 function getRouteByTipo(tipo: string): string {
+  // Esta funcion nos permite tener la redireccion por roles en un solo sitio.
   switch (tipo) {
     case 'admin':
       return '/panel-admin';
     case 'arbitro':
       return '/panel-arbitro';
+    case 'capitan':
+      return '/panel-capitan';
     default:
       return '/panel-usuario';
   }

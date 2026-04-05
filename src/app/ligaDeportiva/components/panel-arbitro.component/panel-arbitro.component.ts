@@ -7,6 +7,7 @@ import { ArbitroResumenComponent } from '../arbitro-resumen.component/arbitro-re
 import { ManagedMatch, MatchManagementService } from '../../services/match-management.service';
 import { SessionService } from '../../services/session.service';
 
+// Panel privado del arbitro, donde solo ve los partidos asignados a su usuario.
 @Component({
   selector: 'app-panel-arbitro',
   imports: [CommonModule, ArbitroResumenComponent, ArbitroMatchListComponent],
@@ -25,6 +26,7 @@ export class PanelArbitroComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const session = this.sessionService.getSession();
 
+    // Validamos que el usuario autenticado sea realmente arbitro.
     if (!session || session.tipo !== 'arbitro') {
       await this.router.navigateByUrl('/login');
       return;

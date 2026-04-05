@@ -46,6 +46,12 @@ export class AuthService {
   }
 
   login(payload: LoginPayload): Promise<LoginResponse> {
-    return firstValueFrom(this.http.post<LoginResponse>('/api/auth/login', payload));
+    // En el login usamos query params porque el enunciado pide recuperar el usuario con GET.
+    const query = new URLSearchParams({
+      username: payload.username,
+      password: payload.password,
+    });
+
+    return firstValueFrom(this.http.get<LoginResponse>(`/api/auth/login?${query.toString()}`));
   }
 }

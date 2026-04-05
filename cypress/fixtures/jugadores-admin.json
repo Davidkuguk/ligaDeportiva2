@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "nombre": "Alvaro Prieto",
+    "posicion": "Defensa",
+    "dorsal": 5,
+    "club_id": 1,
+    "club": {
+      "id": 1,
+      "nombre": "Club Maestre",
+      "categoria": "Juvenil"
+    }
+  }
+]

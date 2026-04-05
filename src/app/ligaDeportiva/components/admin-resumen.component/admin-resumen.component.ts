@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
+// Resumen rapido del panel de administrador.
 @Component({
   selector: 'app-admin-resumen',
   imports: [],

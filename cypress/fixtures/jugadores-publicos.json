@@ -1,0 +1,20 @@
+[
+  {
+    "nombre": "Alvaro Prieto",
+    "posicion": "Defensa",
+    "dorsal": 5,
+    "club": {
+      "nombre": "Club Maestre",
+      "categoria": "Juvenil"
+    }
+  },
+  {
+    "nombre": "Lucia Navas",
+    "posicion": "Centrocampista",
+    "dorsal": 8,
+    "club": {
+      "nombre": "Club Calatrava",
+      "categoria": "Juvenil"
+    }
+  }
+]

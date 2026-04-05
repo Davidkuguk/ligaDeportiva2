@@ -10,6 +10,7 @@ import {
 } from '../app/ligaDeportiva/models/liga.models';
 import { getDatabase } from './mongo';
 
+// En este archivo se centralizan las colecciones y tipos que usamos con MongoDB.
 export interface UserDocument {
   firstName: string;
   lastName: string;
@@ -116,6 +117,7 @@ export async function getNewsCollection(): Promise<Collection<NewsItem>> {
 }
 
 export async function ensureMongoCollections(): Promise<void> {
+  // Primero comprobamos si las colecciones existen y las creamos si faltan.
   const db = await getMongoServiceDatabase();
   const existingCollections = new Set(
     (await db.listCollections({}, { nameOnly: true }).toArray()).map(({ name }) => name),
@@ -129,6 +131,7 @@ export async function ensureMongoCollections(): Promise<void> {
     }
   }
 
+  // Estas actualizaciones sirven para adaptar posibles documentos antiguos al formato actual.
   await db.collection(COLLECTION_NAMES.users).updateMany({ email: null }, { $unset: { email: '' } });
   await db.collection(COLLECTION_NAMES.users).updateMany({ teamName: null }, { $unset: { teamName: '' } });
   await db.collection(COLLECTION_NAMES.users).updateMany(
@@ -161,6 +164,7 @@ export async function ensureMongoCollections(): Promise<void> {
   );
 
   await Promise.all([
+    // Creamos indices para mejorar las consultas y evitar duplicados.
     ensureIndex(
       db.collection<UserDocument>(COLLECTION_NAMES.users),
       { username: 1 },
@@ -219,6 +223,7 @@ async function ensureIndex<TSchema extends Document>(
   try {
     await collection.createIndex(keys, options);
   } catch (error) {
+    // Si el indice ya existe con otro nombre equivalente, no lo consideramos error real.
     if (
       error instanceof MongoServerError &&
       typeof error.message === 'string' &&

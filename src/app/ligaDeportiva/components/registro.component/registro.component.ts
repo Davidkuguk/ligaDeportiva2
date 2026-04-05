@@ -14,6 +14,7 @@ const USER_TYPE_OPTIONS = [
   { value: 'admin', label: 'Admin' },
 ] as const;
 
+// Componente de registro conectado con MongoDB para crear usuarios reales.
 @Component({
   selector: 'app-registro.component',
   imports: [CommonModule, ReactiveFormsModule],
@@ -44,6 +45,7 @@ export class RegistroComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    // Cargamos los equipos para poder asociarlos en el registro si hace falta.
     void this.loadTeams();
   }
 

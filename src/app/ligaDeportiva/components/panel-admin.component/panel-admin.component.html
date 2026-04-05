@@ -24,6 +24,31 @@
       </app-admin-match-list>
     </div>
     <div class="col-12 col-xl-5">
+      <app-admin-player-access
+        [currentKey]="demoAdminKey"
+        [isSaving]="isSavingDemoAdminKey"
+        (saveKey)="saveDemoAdminKey($event)">
+      </app-admin-player-access>
+    </div>
+    <div class="col-12 col-xl-5">
+      <app-admin-player-form
+        [clubs]="clubs"
+        [selectedPlayer]="selectedPlayer"
+        [isSaving]="isSavingPlayer"
+        (savePlayer)="savePlayer($event)"
+        (clearSelection)="clearPlayerSelection()">
+      </app-admin-player-form>
+    </div>
+    <div class="col-12 col-xl-7">
+      <app-admin-player-list
+        [players]="players"
+        [selectedPlayerId]="selectedPlayer?.id ?? null"
+        [deletingPlayerId]="deletingPlayerId"
+        (editPlayer)="selectPlayer($event)"
+        (deletePlayer)="deletePlayer($event)">
+      </app-admin-player-list>
+    </div>
+    <div class="col-12 col-xl-5">
       <app-admin-user-team-form
         [users]="users"
         [teams]="teams"

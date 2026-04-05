@@ -4,6 +4,7 @@ import { firstValueFrom } from 'rxjs';
 
 import { RegisterPayload } from './auth.service';
 
+// Este servicio agrupa todas las llamadas HTTP relacionadas con partidos, equipos y catalogos.
 export interface CatalogOptionsResponse {
   ok: boolean;
   teams: string[];
@@ -60,6 +61,7 @@ export class MatchManagementService {
   }
 
   listMatches(filter: { refereeUsername?: string; teamName?: string } = {}): Promise<MatchesResponse> {
+    // Construimos la query solo con los filtros que realmente se hayan indicado.
     const query = new URLSearchParams();
 
     if (filter.refereeUsername) {

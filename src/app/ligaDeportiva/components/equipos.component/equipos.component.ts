@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { LigaDataService } from '../../services/liga-data.service';
 
+// Vista publica para mostrar los equipos disponibles.
 @Component({
   selector: 'app-equipos.component',
   imports: [],

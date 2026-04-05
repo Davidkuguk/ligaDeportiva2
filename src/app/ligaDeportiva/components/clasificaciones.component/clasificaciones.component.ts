@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { LigaDataService } from '../../services/liga-data.service';
 
+// Aqui se pintan las clasificaciones generales de la liga.
 @Component({
   selector: 'app-clasificaciones.component',
   imports: [],

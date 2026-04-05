@@ -1,3 +1,4 @@
+// Estas interfaces describen la forma de los datos que usamos en el frontend y en MongoDB.
 export interface NewsItem {
   id: number;
   title: string;

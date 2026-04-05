@@ -26,6 +26,7 @@ const angularApp = new AngularNodeAppEngine();
 
 app.use(express.json());
 
+// Endpoint para registrar un usuario nuevo en MongoDB.
 app.post('/api/auth/register', async (req, res) => {
   if (!isMongoConfigured()) {
     res.status(400).json({
@@ -90,6 +91,7 @@ app.post('/api/auth/register', async (req, res) => {
   }
 });
 
+// Devuelve listados auxiliares para formularios: equipos, arbitros y usuarios.
 app.get('/api/catalog/options', async (_req, res) => {
   if (!isMongoConfigured()) {
     res.status(400).json({
@@ -115,6 +117,7 @@ app.get('/api/catalog/options', async (_req, res) => {
   }
 });
 
+// Permite crear equipos nuevos desde el panel del capitan.
 app.post('/api/teams', async (req, res) => {
   if (!isMongoConfigured()) {
     res.status(400).json({ ok: false, message: 'MongoDB is not configured. Set MONGODB_URI and MONGODB_DB_NAME.' });
@@ -145,6 +148,7 @@ app.post('/api/teams', async (req, res) => {
   }
 });
 
+// El administrador puede asignar manualmente un usuario a un equipo.
 app.put('/api/users/:username/team', async (req, res) => {
   if (!isMongoConfigured()) {
     res.status(400).json({ ok: false, message: 'MongoDB is not configured. Set MONGODB_URI and MONGODB_DB_NAME.' });
@@ -174,6 +178,7 @@ app.put('/api/users/:username/team', async (req, res) => {
   }
 });
 
+// Lista partidos y permite filtrarlos por arbitro o por equipo.
 app.get('/api/matches', async (req, res) => {
   if (!isMongoConfigured()) {
     res.status(400).json({
@@ -203,6 +208,7 @@ app.get('/api/matches', async (req, res) => {
   }
 });
 
+// Crear partidos desde el panel de administrador.
 app.post('/api/matches', async (req, res) => {
   if (!isMongoConfigured()) {
     res.status(400).json({
@@ -238,6 +244,7 @@ app.post('/api/matches', async (req, res) => {
   }
 });
 
+// Editar partidos ya existentes.
 app.put('/api/matches/:id', async (req, res) => {
   if (!isMongoConfigured()) {
     res.status(400).json({
@@ -282,52 +289,21 @@ app.put('/api/matches/:id', async (req, res) => {
   }
 });
 
-app.post('/api/auth/login', async (req, res) => {
-  if (!isMongoConfigured()) {
-    res.status(400).json({
-      ok: false,
-      message: 'MongoDB is not configured. Set MONGODB_URI and MONGODB_DB_NAME.',
-    });
-    return;
-  }
-
-  const username = getStringField(req.body, 'username');
-  const password = getStringField(req.body, 'password');
-
-  if (!username || !password) {
-    res.status(400).json({
-      ok: false,
-      message: 'Usuario y contrasena son obligatorios.',
-    });
-    return;
-  }
-
-  try {
-    const user = await loginUser({ username, password });
-
-    if (!user) {
-      res.status(401).json({
-        ok: false,
-        message: 'Credenciales invalidas.',
-      });
-      return;
-    }
-
-    res.status(200).json({
-      ok: true,
-      message: 'Login correcto.',
-      user,
-    });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unknown MongoDB error';
-
-    res.status(500).json({
-      ok: false,
-      message,
-    });
-  }
+// Se deja login por GET para ajustarse al enunciado del proyecto.
+app.get('/api/auth/login', async (req, res) => {
+  await handleLoginRequest(
+    getQueryString(req.query['username']) ?? '',
+    getQueryString(req.query['password']) ?? '',
+    res,
+  );
 });
 
+// Y tambien por POST para mantener una forma mas tipica de enviar credenciales.
+app.post('/api/auth/login', async (req, res) => {
+  await handleLoginRequest(getStringField(req.body, 'username'), getStringField(req.body, 'password'), res);
+});
+
+// Sirve para comprobar rapido si MongoDB esta configurado y responde.
 app.get('/api/health', async (_req, res) => {
   if (!isMongoConfigured()) {
     res.status(200).json({
@@ -358,6 +334,7 @@ app.get('/api/health', async (_req, res) => {
   }
 });
 
+// Si Mongo no esta listo, devolvemos los datos semilla para que la app no se quede vacia.
 app.get('/api/liga-data', async (_req, res) => {
   if (!isMongoConfigured()) {
     res.status(200).json({
@@ -385,6 +362,7 @@ app.get('/api/liga-data', async (_req, res) => {
   }
 });
 
+// Carga en Mongo los datos semilla del proyecto.
 app.post('/api/admin/seed', async (_req, res) => {
   if (!isMongoConfigured()) {
     res.status(400).json({
@@ -474,6 +452,7 @@ function getMatchPayload(body: unknown) {
     return null;
   }
 
+  // Reunimos aqui todos los datos necesarios para crear o editar un partido.
   return {
     sport,
     localTeam,
@@ -490,4 +469,52 @@ function getMatchPayload(body: unknown) {
 
 function isValidMatchStatus(value: string): value is 'scheduled' | 'finished' | 'postponed' {
   return value === 'scheduled' || value === 'finished' || value === 'postponed';
+}
+
+async function handleLoginRequest(
+  username: string,
+  password: string,
+  res: express.Response,
+): Promise<void> {
+  // La logica del login se comparte entre GET y POST para no duplicar codigo.
+  if (!isMongoConfigured()) {
+    res.status(400).json({
+      ok: false,
+      message: 'MongoDB is not configured. Set MONGODB_URI and MONGODB_DB_NAME.',
+    });
+    return;
+  }
+
+  if (!username || !password) {
+    res.status(400).json({
+      ok: false,
+      message: 'Usuario y contrasena son obligatorios.',
+    });
+    return;
+  }
+
+  try {
+    const user = await loginUser({ username, password });
+
+    if (!user) {
+      res.status(401).json({
+        ok: false,
+        message: 'Credenciales invalidas.',
+      });
+      return;
+    }
+
+    res.status(200).json({
+      ok: true,
+      message: 'Login correcto.',
+      user,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unknown MongoDB error';
+
+    res.status(500).json({
+      ok: false,
+      message,
+    });
+  }
 }

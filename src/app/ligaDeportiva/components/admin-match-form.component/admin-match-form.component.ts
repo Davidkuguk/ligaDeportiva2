@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ManagedMatch, MatchPayload } from '../../services/match-management.service';
 
+// Formulario reutilizable para crear y editar partidos desde el panel admin.
 @Component({
   selector: 'app-admin-match-form',
   imports: [CommonModule, ReactiveFormsModule],
@@ -35,6 +36,7 @@ export class AdminMatchFormComponent implements OnChanges {
   });
 
   ngOnChanges(changes: SimpleChanges): void {
+    // Si cambia el partido seleccionado, cargamos sus datos en el formulario.
     if (changes['selectedMatch']) {
       this.patchForm();
     }
@@ -77,6 +79,7 @@ export class AdminMatchFormComponent implements OnChanges {
   }
 
   private patchForm(): void {
+    // Este metodo rellena el formulario cuando editamos un partido ya existente.
     if (!this.selectedMatch) {
       this.resetForm();
       return;

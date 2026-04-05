@@ -8,10 +8,13 @@ import { JugadoresComponent } from './ligaDeportiva/components/jugadores.compone
 import { LoginComponent } from './ligaDeportiva/components/login.component/login.component';
 import { PanelAdminComponent } from './ligaDeportiva/components/panel-admin.component/panel-admin.component';
 import { PanelArbitroComponent } from './ligaDeportiva/components/panel-arbitro.component/panel-arbitro.component';
+import { PanelCapitanComponent } from './ligaDeportiva/components/panel-capitan.component/panel-capitan.component';
 import { PanelUsuarioComponent } from './ligaDeportiva/components/panel-usuario.component/panel-usuario.component';
 import { RegistroComponent } from './ligaDeportiva/components/registro.component/registro.component';
 import { ResultadoComponent } from './ligaDeportiva/components/resultado.component/resultado.component';
 
+// Aqui se centralizan todas las rutas de la aplicacion para separar las vistas publicas
+// de los paneles privados segun el rol del usuario.
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -25,6 +28,7 @@ export const routes: Routes = [
   { path: 'registro', component: RegistroComponent },
   { path: 'panel-admin', component: PanelAdminComponent },
   { path: 'panel-arbitro', component: PanelArbitroComponent },
+  { path: 'panel-capitan', component: PanelCapitanComponent },
   { path: 'panel-usuario', component: PanelUsuarioComponent },
   { path: '**', redirectTo: '' },
 ];

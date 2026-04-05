@@ -4,6 +4,7 @@ import { provideRouter } from '@angular/router';
 import { App } from './app';
 import { routes } from './app.routes';
 
+// Tests basicos para comprobar que la app raiz se crea y monta el layout compartido.
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({

@@ -13,7 +13,7 @@
     <div class="col-12" *ngIf="successMessage">
       <div class="alert alert-success mb-0" role="alert">{{ successMessage }}</div>
     </div>
-    <div class="col-12 col-xl-5">
+    <div class="col-12 col-xl-5" *ngIf="canCreateTeam()">
       <app-captain-team-form
         [captainUsername]="username"
         [canCreate]="canCreateTeam()"

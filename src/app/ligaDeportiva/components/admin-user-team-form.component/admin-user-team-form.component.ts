@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
+// Formulario del administrador para asignar usuarios a equipos existentes.
 @Component({
   selector: 'app-admin-user-team-form',
   imports: [CommonModule, ReactiveFormsModule],

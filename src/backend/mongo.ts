@@ -5,6 +5,7 @@ import { Db, MongoClient } from 'mongodb';
 let mongoClient: MongoClient | null = null;
 let mongoClientPromise: Promise<MongoClient> | null = null;
 
+// Leemos la URI desde variables de entorno para no dejar datos sensibles en el codigo.
 function getMongoUri(): string | undefined {
   return process.env['MONGODB_URI'];
 }
@@ -14,6 +15,7 @@ export function isMongoConfigured(): boolean {
 }
 
 export async function connectToMongo(): Promise<MongoClient> {
+  // Reutilizamos la misma conexion para no abrir clientes nuevos en cada peticion.
   if (mongoClient) {
     return mongoClient;
   }
@@ -44,6 +46,7 @@ export async function getDatabase(): Promise<Db> {
 }
 
 export async function pingMongo(): Promise<boolean> {
+  // Este ping se usa para comprobar que la base de datos responde correctamente.
   if (!isMongoConfigured()) {
     return false;
   }

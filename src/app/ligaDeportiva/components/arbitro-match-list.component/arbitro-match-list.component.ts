@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { ManagedMatch } from '../../services/match-management.service';
 
+// Lista de partidos asignados al arbitro autenticado.
 @Component({
   selector: 'app-arbitro-match-list',
   imports: [CommonModule],

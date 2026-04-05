@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
+// Formulario simple para que un capitan cree su equipo.
 @Component({
   selector: 'app-captain-team-form',
   imports: [CommonModule, ReactiveFormsModule],

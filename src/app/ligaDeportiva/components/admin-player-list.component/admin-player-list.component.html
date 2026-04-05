@@ -1,0 +1,39 @@
+<section class="card shadow-sm border-0">
+  <div class="card-body p-4">
+    <h2 class="h4 colorMorado mb-3">Jugadores gestionables</h2>
+    <div class="table-responsive" *ngIf="players.length; else noPlayers">
+      <table class="table align-middle mb-0">
+        <thead>
+          <tr>
+            <th>Jugador</th>
+            <th>Posicion</th>
+            <th>Dorsal</th>
+            <th>Club</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let player of players" [class.table-warning]="selectedPlayerId === player.id">
+            <td><strong>{{ player.nombre }}</strong></td>
+            <td>{{ player.posicion }}</td>
+            <td>#{{ player.dorsal }}</td>
+            <td>
+              {{ player.clubNombre }}
+              <div class="small text-secondary">{{ player.categoria }}</div>
+            </td>
+            <td class="text-nowrap">
+              <button type="button" class="btn btn-sm btn-outline-primary me-2" (click)="editPlayer.emit(player)">Editar</button>
+              <button type="button" class="btn btn-sm btn-outline-danger" [disabled]="deletingPlayerId === player.id"
+                (click)="deletePlayer.emit(player)">
+                {{ deletingPlayerId === player.id ? 'Eliminando...' : 'Eliminar' }}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ng-template #noPlayers>
+      <p class="mb-0 text-secondary">Todavia no hay jugadores creados en la API.</p>
+    </ng-template>
+  </div>
+</section>

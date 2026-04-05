@@ -8,6 +8,7 @@ import { UsuarioResumenComponent } from '../usuario-resumen.component/usuario-re
 import { ManagedMatch, MatchManagementService } from '../../services/match-management.service';
 import { SessionService } from '../../services/session.service';
 
+// Panel general de usuario. Si el rol es capitan, aqui se habilita la creacion de equipo.
 @Component({
   selector: 'app-panel-usuario',
   imports: [CommonModule, UsuarioResumenComponent, UsuarioMatchListComponent, CaptainTeamFormComponent],
@@ -32,6 +33,7 @@ export class PanelUsuarioComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const session = this.sessionService.getSession();
 
+    // Si no hay sesion, no dejamos entrar al panel.
     if (!session) {
       await this.router.navigateByUrl('/login');
       return;
@@ -52,6 +54,7 @@ export class PanelUsuarioComponent implements OnInit {
     this.changeDetectorRef.markForCheck();
 
     try {
+      // Al crear el equipo actualizamos tambien la sesion local.
       const response = await this.matchManagementService.createTeam(payload);
       this.teamName = response.team.name;
       this.sessionService.updateSessionTeam(response.team.name);
@@ -66,6 +69,7 @@ export class PanelUsuarioComponent implements OnInit {
   }
 
   protected canCreateTeam(): boolean {
+    // Solo un capitan sin equipo creado ve este formulario.
     return this.tipo === 'capitan' && !this.teamName;
   }
 

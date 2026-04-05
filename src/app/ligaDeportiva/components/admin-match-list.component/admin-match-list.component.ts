@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 
 import { ManagedMatch } from '../../services/match-management.service';
 
+// Lista de partidos que el administrador puede seleccionar para editar.
 @Component({
   selector: 'app-admin-match-list',
   imports: [CommonModule],

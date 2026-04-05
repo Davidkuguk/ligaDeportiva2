@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { LIGA_SEED_DATA, LigaSeedData } from '../data/liga.seed';
 
+// Servicio basico para servir los datos semilla en las vistas publicas.
 @Injectable({ providedIn: 'root' })
 export class LigaDataService {
   getLigaData(): LigaSeedData {

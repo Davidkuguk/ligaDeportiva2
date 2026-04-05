@@ -7,6 +7,7 @@ import { ensureMongoCollections, getUsersCollection, UserDocument } from './mong
 
 const scrypt = promisify(scryptCallback);
 
+// Repositorio responsable del registro y login de usuarios.
 export interface RegisterUserInput {
   firstName: string;
   lastName: string;
@@ -74,6 +75,7 @@ export async function registerUser(input: RegisterUserInput): Promise<RegisterUs
   try {
     await usersCollection.insertOne(userDocument);
   } catch (error) {
+    // Si el indice unico falla, devolvemos un mensaje mas amigable.
     if (error instanceof MongoServerError && error.code === 11000) {
       const duplicatedField = getDuplicatedField(error);
       const message =
@@ -121,6 +123,7 @@ export async function loginUser(input: LoginUserInput): Promise<LoginUserResult 
 }
 
 async function hashPassword(password: string): Promise<string> {
+  // Guardamos la contrasena cifrada con salt para no almacenarla en texto plano.
   const salt = randomBytes(16).toString('hex');
   const derivedKey = (await scrypt(password, salt, 64)) as Buffer;
 
@@ -128,6 +131,7 @@ async function hashPassword(password: string): Promise<string> {
 }
 
 async function verifyPassword(password: string, storedHash: string): Promise<boolean> {
+  // Volvemos a generar el hash y lo comparamos de forma segura.
   const [salt, hash] = storedHash.split(':');
 
   if (!salt || !hash) {

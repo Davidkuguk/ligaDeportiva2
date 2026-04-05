@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "nombre": "Club Maestre",
+    "categoria": "Juvenil"
+  },
+  {
+    "id": 2,
+    "nombre": "Club Calatrava",
+    "categoria": "Cadete"
+  }
+]

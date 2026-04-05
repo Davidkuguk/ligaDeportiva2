@@ -1,0 +1,21 @@
+<section class="card shadow-sm border-0">
+  <div class="card-body p-4">
+    <h2 class="h4 colorMorado mb-3">Acceso API de jugadores</h2>
+    <p class="text-secondary small">
+      Guarda aqui la clave demo del backend Laravel para poder crear, editar y eliminar jugadores desde el panel.
+    </p>
+    <form class="row g-3" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="col-12">
+        <label for="demoAdminKey" class="form-label">Clave demo admin</label>
+        <input id="demoAdminKey" type="text" class="form-control" formControlName="demoAdminKey"
+          placeholder="Introduce la clave X-Demo-Admin-Key">
+      </div>
+      <div class="col-12 d-flex gap-2">
+        <button type="submit" class="btn fondoMorado text-white registro-submit-btn" [disabled]="isSaving">
+          {{ isSaving ? 'Guardando...' : 'Guardar clave' }}
+        </button>
+        <button type="button" class="btn btn-outline-secondary" [disabled]="isSaving" (click)="clear()">Quitar clave</button>
+      </div>
+    </form>
+  </div>
+</section>

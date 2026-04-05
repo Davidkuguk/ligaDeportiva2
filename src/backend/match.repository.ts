@@ -2,6 +2,7 @@ import { ObjectId } from 'mongodb';
 
 import { getMatchesCollection, getUsersCollection, MatchDocument, UserDocument } from './mongo.service';
 
+// Repositorio para consultar, crear y editar partidos en MongoDB.
 export interface MatchView extends MatchDocument {
   id: string;
 }
@@ -28,6 +29,7 @@ export async function listMatches(filter: MatchFilter = {}): Promise<MatchView[]
   const matchesCollection = await getMatchesCollection();
   const query: Record<string, unknown> = {};
 
+  // El arbitro filtra por su usuario y el usuario/capitan por el nombre del equipo.
   if (filter.refereeUsername) {
     query['refereeUsername'] = filter.refereeUsername.toLowerCase();
   }
@@ -44,6 +46,7 @@ export async function createMatch(payload: MatchPayload): Promise<MatchView> {
   const matchesCollection = await getMatchesCollection();
   const referee = await resolveReferee(payload.refereeUsername);
 
+  // Guardamos tambien el nombre del arbitro para simplificar la lectura desde frontend.
   const document: MatchDocument = {
     sport: payload.sport.trim(),
     localTeam: payload.localTeam.trim(),
@@ -93,6 +96,7 @@ export async function updateMatch(id: string, payload: MatchPayload): Promise<Ma
 }
 
 async function resolveReferee(refereeUsername?: string): Promise<UserDocument | null> {
+  // Solo aceptamos usuarios que realmente sean arbitros.
   if (!refereeUsername) {
     return null;
   }
@@ -105,6 +109,7 @@ async function resolveReferee(refereeUsername?: string): Promise<UserDocument | 
 }
 
 function mapMatchDocument(document: MatchDocument & { _id: ObjectId }): MatchView {
+  // Convertimos el ObjectId de Mongo a string para manejarlo mejor en Angular.
   return {
     id: document._id.toString(),
     sport: document.sport,

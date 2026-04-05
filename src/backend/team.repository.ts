@@ -3,6 +3,7 @@ import { MongoServerError } from 'mongodb';
 import { Team } from '../app/ligaDeportiva/models/liga.models';
 import { getTeamsCollection, getUsersCollection, UserDocument } from './mongo.service';
 
+// Repositorio de equipos: alta de equipos y asignacion de usuarios.
 export interface CreateTeamInput {
   name: string;
   competition: string;
@@ -40,6 +41,7 @@ export async function createTeam(input: CreateTeamInput): Promise<TeamSummary> {
   const [teamsCollection, usersCollection] = await Promise.all([getTeamsCollection(), getUsersCollection()]);
   const captainUser = await usersCollection.findOne({ username: input.captainUsername.trim().toLowerCase() });
 
+  // Para crear un equipo primero validamos que exista el capitan.
   if (!captainUser) {
     throw new Error('Capitan no encontrado.');
   }
@@ -63,6 +65,7 @@ export async function createTeam(input: CreateTeamInput): Promise<TeamSummary> {
   }
 
   await usersCollection.updateOne(
+    // Despues de crear el equipo, dejamos enlazado al capitan con ese equipo.
     { username: captainUser.username },
     { $set: { teamName: teamDocument.name, updatedAt: new Date().toISOString() } },
   );
@@ -75,6 +78,7 @@ export async function createTeam(input: CreateTeamInput): Promise<TeamSummary> {
 }
 
 export async function assignUserToTeam(input: AssignUserTeamInput): Promise<UserSummary | null> {
+  // El administrador puede reasignar un usuario a un equipo desde el panel.
   const usersCollection = await getUsersCollection();
   const result = await usersCollection.findOneAndUpdate(
     { username: input.username.trim().toLowerCase() },

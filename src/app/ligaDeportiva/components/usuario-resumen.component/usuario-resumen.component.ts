@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
+// Tarjeta resumen del panel de usuario con su nombre, equipo y numero de partidos.
 @Component({
   selector: 'app-usuario-resumen',
   imports: [],

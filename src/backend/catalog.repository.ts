@@ -1,5 +1,6 @@
 import { getTeamsCollection, getUsersCollection } from './mongo.service';
 
+// Este repositorio devuelve datos auxiliares para rellenar selects y listados del frontend.
 export interface CatalogOptions {
   teams: string[];
   referees: Array<{ username: string; name: string }>;

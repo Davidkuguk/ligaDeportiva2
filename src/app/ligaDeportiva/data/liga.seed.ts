@@ -1,5 +1,6 @@
 import { MatchResult, NewsItem, Player, Referee, Standing, Team } from '../models/liga.models';
 
+// Este tipo agrupa todos los bloques de datos que necesita la web de la liga.
 export interface LigaSeedData {
   news: NewsItem[];
   results: MatchResult[];
@@ -9,6 +10,7 @@ export interface LigaSeedData {
   referees: Referee[];
 }
 
+// Estos datos se usan como contenido inicial y tambien como semilla para MongoDB.
 export const LIGA_SEED_DATA: LigaSeedData = {
   news: [
     {

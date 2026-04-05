@@ -8,6 +8,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent {
+  // Esta variable controla si el menu hamburguesa esta abierto o cerrado en movil.
   protected isMenuOpen = false;
 
   protected toggleMenu(): void {
