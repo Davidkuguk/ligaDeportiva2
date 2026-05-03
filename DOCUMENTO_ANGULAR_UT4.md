@@ -91,7 +91,7 @@ Para no depender de un servidor real, se ha usado:
 La prueba intercepta esta peticion:
 
 ```ts
-/api/adegjorsu;
+/api/jugadores;
 ```
 
 Y devuelve una respuesta falsa con formato parecido a Laravel:
@@ -144,7 +144,7 @@ npm run test:e2e
 Resultado comprobado:
 
 ```text
-2 passing
+3 passing
 ```
 
 Nota: en Windows fue necesario quitar la variable `ELECTRON_RUN_AS_NODE` antes de ejecutar Cypress:
