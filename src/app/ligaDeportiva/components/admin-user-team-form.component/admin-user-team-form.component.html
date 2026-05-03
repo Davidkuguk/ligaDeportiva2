@@ -1,25 +1,31 @@
-<!-- Comentario de estudiante: esta plantilla pinta la parte visual del componente y sus datos principales. -->
+﻿<!-- esta plantilla pinta la parte visual del componente y sus datos principales. -->
 <section class="card shadow-sm border-0">
   <div class="card-body p-4">
     <h2 class="h4 colorMorado mb-3">Asignar usuario a equipo</h2>
+    <!-- este formulario recoge datos del usuario y llama al metodo del componente. -->
     <form class="row g-3" [formGroup]="form" (ngSubmit)="submit()">
       <div class="col-12">
         <label for="assignUsername" class="form-label">Usuario</label>
+        <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
         <select id="assignUsername" class="form-select" formControlName="username">
           <option value="">Selecciona usuario</option>
+          <!-- con este bucle Angular repite el bloque por cada elemento de la lista. -->
           <option *ngFor="let user of users" [value]="user.username">
-            {{ user.username }} · {{ user.tipo }} · {{ user.teamName || 'Sin equipo' }}
+            {{ user.username }} Â· {{ user.tipo }} Â· {{ user.teamName || 'Sin equipo' }}
           </option>
         </select>
       </div>
       <div class="col-12">
         <label for="assignTeamName" class="form-label">Equipo</label>
+        <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
         <select id="assignTeamName" class="form-select" formControlName="teamName">
           <option value="">Selecciona equipo</option>
+          <!-- con este bucle Angular repite el bloque por cada elemento de la lista. -->
           <option *ngFor="let team of teams" [value]="team">{{ team }}</option>
         </select>
       </div>
       <div class="col-12">
+        <!-- este boton permite ejecutar una accion desde la pantalla. -->
         <button type="submit" class="btn fondoMorado text-white registro-submit-btn" [disabled]="isSaving">
           {{ isSaving ? 'Asignando...' : 'Asignar equipo' }}
         </button>
@@ -27,3 +33,4 @@
     </form>
   </div>
 </section>
+

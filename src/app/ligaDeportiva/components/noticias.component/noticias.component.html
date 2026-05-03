@@ -1,4 +1,4 @@
-<!-- Comentario de estudiante: esta plantilla pinta la parte visual del componente y sus datos principales. -->
+﻿<!-- esta plantilla pinta la parte visual del componente y sus datos principales. -->
 <section class="container py-4" aria-labelledby="noticias-title">
   <div class="d-flex align-items-center justify-content-between mb-3">
     <div>
@@ -10,6 +10,7 @@
 
   <div class="row g-3">
     @for (item of news; track item.id) {
+      <!-- uso article para mostrar una tarjeta o elemento independiente. -->
       <article class="col-12 col-lg-4">
         <div class="card news-card h-100 border-0 shadow-sm overflow-hidden">
           <img [src]="item.image" [alt]="item.alt" class="news-image">
@@ -35,3 +36,4 @@
     </div>
   </div>
 </section>
+

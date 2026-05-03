@@ -1,6 +1,7 @@
-<!-- Comentario de estudiante: esta plantilla pinta la parte visual del componente y sus datos principales. -->
+﻿<!-- esta plantilla pinta la parte visual del componente y sus datos principales. -->
 <main class="container py-5">
   <div class="row g-4">
+    <!-- separo esta seccion para organizar mejor la vista. -->
     <section class="col-12 col-lg-5">
       <p class="section-kicker mb-1">Soporte</p>
       <h1 class="h2 mb-3">Contacto</h1>
@@ -17,21 +18,26 @@
       </div>
     </section>
 
+    <!-- separo esta seccion para organizar mejor la vista. -->
     <section class="col-12 col-lg-7">
       <div class="card card-surface border-0 shadow-sm">
         <div class="card-body p-4 p-md-5">
           <h2 class="h4 text-dark mb-4">Envianos tu consulta</h2>
+          <!-- este formulario recoge datos del usuario y llama al metodo del componente. -->
           <form class="row g-3">
             <div class="col-12 col-md-6">
               <label for="nombreContacto" class="form-label">Nombre</label>
+              <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
               <input id="nombreContacto" type="text" class="form-control" placeholder="Tu nombre">
             </div>
             <div class="col-12 col-md-6">
               <label for="emailContacto" class="form-label">Correo</label>
+              <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
               <input id="emailContacto" type="email" class="form-control" placeholder="tu@correo.com">
             </div>
             <div class="col-12 col-md-6">
               <label for="competicionContacto" class="form-label">Competicion</label>
+              <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
               <select id="competicionContacto" class="form-select">
                 <option>Liga Principal</option>
                 <option>Copa Regional</option>
@@ -40,6 +46,7 @@
             </div>
             <div class="col-12 col-md-6">
               <label for="motivoContacto" class="form-label">Motivo</label>
+              <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
               <select id="motivoContacto" class="form-select">
                 <option>Informacion general</option>
                 <option>Inscripcion</option>
@@ -48,9 +55,11 @@
             </div>
             <div class="col-12">
               <label for="mensajeContacto" class="form-label">Mensaje</label>
+              <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
               <textarea id="mensajeContacto" class="form-control" rows="4" placeholder="Escribe tu consulta"></textarea>
             </div>
             <div class="col-12">
+              <!-- este boton permite ejecutar una accion desde la pantalla. -->
               <button type="button" class="btn fondoMorado text-white px-4">Enviar</button>
             </div>
           </form>
@@ -59,3 +68,4 @@
     </section>
   </div>
 </main>
+

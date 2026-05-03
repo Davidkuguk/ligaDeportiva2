@@ -1,5 +1,6 @@
-// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
+﻿// este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 // Estas interfaces describen la forma de los datos que usamos en el frontend.
+// esta interfaz marca la forma que tienen los datos de NewsItem.
 export interface NewsItem {
   id: number;
   title: string;
@@ -8,6 +9,7 @@ export interface NewsItem {
   alt: string;
 }
 
+// esta interfaz marca la forma que tienen los datos de MatchResult.
 export interface MatchResult {
   localTeam: string;
   awayTeam: string;
@@ -17,6 +19,7 @@ export interface MatchResult {
   date: string;
 }
 
+// esta interfaz marca la forma que tienen los datos de Team.
 export interface Team {
   name: string;
   competition: string;
@@ -25,6 +28,7 @@ export interface Team {
   players: string[];
 }
 
+// esta interfaz marca la forma que tienen los datos de Standing.
 export interface Standing {
   position: number;
   team: string;
@@ -38,6 +42,7 @@ export interface Standing {
   competition: string;
 }
 
+// esta interfaz marca la forma que tienen los datos de Player.
 export interface Player {
   name: string;
   nickname: string;
@@ -48,6 +53,7 @@ export interface Player {
   stats: string[];
 }
 
+// esta interfaz marca la forma que tienen los datos de Referee.
 export interface Referee {
   name: string;
   nickname: string;
@@ -56,3 +62,4 @@ export interface Referee {
   competition: string;
   stats: string[];
 }
+

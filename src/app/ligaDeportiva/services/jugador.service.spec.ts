@@ -1,11 +1,13 @@
-// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
+﻿// este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { TestBed } from '@angular/core/testing';
 
 import { JugadorService } from './jugador.service';
 
+// agrupo aqui las pruebas relacionadas con esta parte.
 describe('JugadorService', () => {
   let service: JugadorService;
 
+  // preparo el entorno antes de cada prueba para que no se mezclen datos.
   beforeEach(() => {
     localStorage.clear();
 
@@ -13,10 +15,12 @@ describe('JugadorService', () => {
     service = TestBed.inject(JugadorService);
   });
 
+  // limpio lo que se haya usado en la prueba para dejar todo controlado.
   afterEach(() => {
     localStorage.clear();
   });
 
+  // este caso comprueba un comportamiento concreto de la aplicacion.
   it('devuelve los jugadores iniciales adaptados al modelo de la vista publica', async () => {
     const players = await service.listPlayers();
 
@@ -34,6 +38,7 @@ describe('JugadorService', () => {
     );
   });
 
+  // este caso comprueba un comportamiento concreto de la aplicacion.
   it('crea un jugador y lo mantiene en el listado gestionado', async () => {
     const player = await service.createPlayer({
       nombre: 'Marta Cano',
@@ -56,6 +61,7 @@ describe('JugadorService', () => {
     expect(players.some((candidate) => candidate.nombre === 'Marta Cano')).toBeTrue();
   });
 
+  // este caso comprueba un comportamiento concreto de la aplicacion.
   it('actualiza y elimina un jugador existente', async () => {
     const createdPlayer = await service.createPlayer({
       nombre: 'Luis Marco',
@@ -85,6 +91,7 @@ describe('JugadorService', () => {
     expect(players.some((candidate) => candidate.id === createdPlayer.id)).toBeFalse();
   });
 
+  // este caso comprueba un comportamiento concreto de la aplicacion.
   it('lanza un error si se intenta actualizar un jugador que no existe', async () => {
     await expectAsync(
       service.updatePlayer(999, {
@@ -96,3 +103,4 @@ describe('JugadorService', () => {
     ).toBeRejectedWithError('Jugador no encontrado.');
   });
 });
+

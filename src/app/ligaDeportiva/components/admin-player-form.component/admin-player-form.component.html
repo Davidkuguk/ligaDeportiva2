@@ -1,35 +1,44 @@
-<!-- Comentario de estudiante: esta plantilla pinta la parte visual del componente y sus datos principales. -->
+﻿<!-- esta plantilla pinta la parte visual del componente y sus datos principales. -->
 <section class="card shadow-sm border-0">
   <div class="card-body p-4">
     <h2 class="h4 colorMorado mb-3">{{ selectedPlayer ? 'Editar jugador' : 'Crear jugador' }}</h2>
+    <!-- este formulario recoge datos del usuario y llama al metodo del componente. -->
     <form class="row g-3" [formGroup]="playerForm" (ngSubmit)="submit()">
       <div class="col-12 col-md-6">
         <label for="playerName" class="form-label">Nombre</label>
+        <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
         <input id="playerName" type="text" class="form-control" formControlName="nombre">
       </div>
       <div class="col-12 col-md-6">
         <label for="playerPosition" class="form-label">Posicion</label>
+        <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
         <input id="playerPosition" type="text" class="form-control" formControlName="posicion">
       </div>
       <div class="col-12 col-md-6">
         <label for="playerNumber" class="form-label">Dorsal</label>
+        <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
         <input id="playerNumber" type="number" class="form-control" formControlName="dorsal" min="1" max="99">
       </div>
       <div class="col-12 col-md-6">
         <label for="playerClub" class="form-label">Club</label>
+        <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
         <select id="playerClub" class="form-select" formControlName="club_id">
           <option [ngValue]="0">Selecciona club</option>
+          <!-- con este bucle Angular repite el bloque por cada elemento de la lista. -->
           <option *ngFor="let club of clubs" [ngValue]="club.id">
-            {{ club.nombre }} · {{ club.categoria }}
+            {{ club.nombre }} Â· {{ club.categoria }}
           </option>
         </select>
       </div>
       <div class="col-12 d-flex gap-2">
+        <!-- este boton permite ejecutar una accion desde la pantalla. -->
         <button type="submit" class="btn fondoMorado text-white registro-submit-btn" [disabled]="isSaving">
           {{ isSaving ? 'Guardando...' : (selectedPlayer ? 'Actualizar jugador' : 'Crear jugador') }}
         </button>
+        <!-- este boton permite ejecutar una accion desde la pantalla. -->
         <button type="button" class="btn btn-outline-secondary" [disabled]="isSaving" (click)="resetForm()">Limpiar</button>
       </div>
     </form>
   </div>
 </section>
+

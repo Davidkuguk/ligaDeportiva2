@@ -1,4 +1,4 @@
-/* Comentario de estudiante: aqui se guardan estilos para que la interfaz se vea ordenada. */
+﻿/* aqui se guardan estilos para que la interfaz se vea ordenada. */
 :host {
   display: flex;
   flex: 1;
@@ -6,7 +6,9 @@
   min-height: 100vh;
 }
 
+/* este selector ajusta la apariencia de esta parte de la pagina. */
 .app-content {
   display: block;
   flex: 1;
 }
+

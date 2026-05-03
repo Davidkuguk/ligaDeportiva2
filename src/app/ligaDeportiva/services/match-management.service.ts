@@ -1,8 +1,9 @@
-// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
+﻿// este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { Injectable, inject } from '@angular/core';
 
 import { LocalLeagueStoreService } from './local-league-store.service';
 
+// esta interfaz marca la forma que tienen los datos de CatalogOptionsResponse.
 export interface CatalogOptionsResponse {
   ok: boolean;
   teams: string[];
@@ -10,6 +11,7 @@ export interface CatalogOptionsResponse {
   users: Array<{ username: string; name: string; tipo: string; teamName?: string }>;
 }
 
+// esta interfaz marca la forma que tienen los datos de ManagedMatch.
 export interface ManagedMatch {
   id: string;
   sport: string;
@@ -25,6 +27,7 @@ export interface ManagedMatch {
   score?: string;
 }
 
+// esta interfaz marca la forma que tienen los datos de MatchPayload.
 export interface MatchPayload {
   sport: string;
   localTeam: string;
@@ -38,11 +41,13 @@ export interface MatchPayload {
   status: ManagedMatch['status'];
 }
 
+// esta interfaz marca la forma que tienen los datos de MatchesResponse.
 export interface MatchesResponse {
   ok: boolean;
   matches: ManagedMatch[];
 }
 
+// esta interfaz marca la forma que tienen los datos de TeamPayload.
 export interface TeamPayload {
   name: string;
   competition: string;
@@ -50,10 +55,14 @@ export interface TeamPayload {
   image?: string;
 }
 
+// con Injectable hago que Angular pueda usar esta clase como servicio.
 @Injectable({ providedIn: 'root' })
+// esta clase contiene la logica principal de MatchManagementService.
 export class MatchManagementService {
+  // guardo esta referencia como propiedad para usarla dentro de la clase.
   private readonly localStore = inject(LocalLeagueStoreService);
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   getCatalogOptions(): Promise<CatalogOptionsResponse> {
     return Promise.resolve({
       ok: true,
@@ -73,6 +82,7 @@ export class MatchManagementService {
     });
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   createMatch(payload: MatchPayload): Promise<{ ok: boolean; match: ManagedMatch }> {
     return Promise.resolve({
       ok: true,
@@ -80,6 +90,7 @@ export class MatchManagementService {
     });
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   updateMatch(id: string, payload: MatchPayload): Promise<{ ok: boolean; match: ManagedMatch }> {
     return Promise.resolve({
       ok: true,
@@ -87,6 +98,7 @@ export class MatchManagementService {
     });
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   createTeam(payload: TeamPayload): Promise<{ ok: boolean; team: { name: string; competition: string; captain: string } }> {
     return Promise.resolve({
       ok: true,
@@ -94,6 +106,7 @@ export class MatchManagementService {
     });
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   assignUserTeam(username: string, teamName: string): Promise<{ ok: boolean; user: CatalogOptionsResponse['users'][number] }> {
     return Promise.resolve({
       ok: true,
@@ -101,3 +114,4 @@ export class MatchManagementService {
     });
   }
 }
+

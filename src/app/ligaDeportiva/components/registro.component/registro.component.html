@@ -1,29 +1,36 @@
-<!-- Comentario de estudiante: esta plantilla pinta la parte visual del componente y sus datos principales. -->
+﻿<!-- esta plantilla pinta la parte visual del componente y sus datos principales. -->
 <main class="container py-5">
     <div class="row justify-content-center">
         <div class="col-12 col-md-9 col-lg-7">
+            <!-- separo esta seccion para organizar mejor la vista. -->
             <section class="card shadow-sm border-0">
                 <div class="card-body p-4 p-md-5">
                     <h1 class="h2 mb-4 colorMorado">Registro</h1>
+                    <!-- este formulario recoge datos del usuario y llama al metodo del componente. -->
                     <form class="row g-3" [formGroup]="registerForm" (ngSubmit)="submit()">
                         <div class="col-12 col-md-6">
                             <label for="nombre" class="form-label colorMorado">Nombre</label>
+                            <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
                             <input id="nombre" type="text" class="form-control" placeholder="Introduce tu nombre"
                                 formControlName="firstName">
                         </div>
                         <div class="col-12 col-md-6">
                             <label for="apellidos" class="form-label colorMorado">Apellidos</label>
+                            <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
                             <input id="apellidos" type="text" class="form-control"
                                 placeholder="Introduce tus apellidos" formControlName="lastName">
                         </div>
                         <div class="col-12">
                             <label for="username" class="form-label colorMorado">Usuario</label>
+                            <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
                             <input id="username" type="text" class="form-control"
                                 placeholder="Elige un nombre de usuario" formControlName="username">
                         </div>
                         <div class="col-12">
                             <label for="tipo" class="form-label colorMorado">Tipo de usuario</label>
+                            <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
                             <select id="tipo" class="form-select" formControlName="tipo">
+                                <!-- con este bucle Angular repite el bloque por cada elemento de la lista. -->
                                 <option *ngFor="let option of userTypeOptions" [value]="option.value">
                                     {{ option.label }}
                                 </option>
@@ -31,19 +38,23 @@
                         </div>
                         <div class="col-12">
                             <label for="teamName" class="form-label colorMorado">Equipo</label>
+                            <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
                             <select id="teamName" class="form-select" formControlName="teamName">
                                 <option value="">Sin equipo asignado</option>
+                                <!-- con este bucle Angular repite el bloque por cada elemento de la lista. -->
                                 <option *ngFor="let team of teamOptions" [value]="team">{{ team }}</option>
                             </select>
                             <p class="small text-secondary mb-0 mt-2" *ngIf="isLoadingTeams">Cargando equipos...</p>
                         </div>
                         <div class="col-12 col-md-6">
                             <label for="password" class="form-label colorMorado">Contrasena</label>
+                            <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
                             <input id="password" type="password" class="form-control" placeholder="Crea una clave"
                                 formControlName="password">
                         </div>
                         <div class="col-12 col-md-6">
                             <label for="passwordConfirm" class="form-label colorMorado">Repetir contrasena</label>
+                            <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
                             <input id="passwordConfirm" type="password" class="form-control"
                                 placeholder="Repite la clave" formControlName="passwordConfirm">
                         </div>
@@ -57,6 +68,7 @@
                             <div class="alert alert-success mb-0" role="alert">{{ submitSuccess }}</div>
                         </div>
                         <div class="col-12">
+                            <!-- este boton permite ejecutar una accion desde la pantalla. -->
                             <button type="submit" class="btn fondoMorado text-white registro-submit-btn"
                                 [disabled]="isSubmitting" [attr.aria-busy]="isSubmitting">
                                 <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
@@ -69,3 +81,4 @@
         </div>
     </div>
 </main>
+

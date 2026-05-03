@@ -1,4 +1,4 @@
-<!-- Comentario de estudiante: esta plantilla pinta la parte visual del componente y sus datos principales. -->
+﻿<!-- esta plantilla pinta la parte visual del componente y sus datos principales. -->
 <main class="container py-4">
   <div class="mb-4">
     <p class="section-kicker mb-1">Plantilla individual</p>
@@ -7,13 +7,15 @@
 
   <div class="row g-4">
     @for (player of players; track player.name) {
+      <!-- separo esta seccion para organizar mejor la vista. -->
       <section class="col-12 col-lg-4">
+        <!-- uso article para mostrar una tarjeta o elemento independiente. -->
         <article class="card card-surface h-100 border-0 shadow-sm">
           <div class="card-body p-4">
             <div class="d-flex justify-content-between gap-3 mb-3">
               <div>
                 <h2 class="h3 text-dark mb-1">{{ player.name }}</h2>
-                <p class="text-body-secondary mb-0">{{ player.team }} · {{ player.competition }}</p>
+                <p class="text-body-secondary mb-0">{{ player.team }} Â· {{ player.competition }}</p>
               </div>
               <span class="display-6 colorMorado fw-bold">#{{ player.number }}</span>
             </div>
@@ -31,3 +33,4 @@
     }
   </div>
 </main>
+

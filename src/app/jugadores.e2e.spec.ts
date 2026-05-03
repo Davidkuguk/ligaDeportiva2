@@ -1,4 +1,4 @@
-// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
+﻿// este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { provideRouter } from '@angular/router';
@@ -6,7 +6,9 @@ import { provideRouter } from '@angular/router';
 import { App } from './app';
 import { routes } from './app.routes';
 
+// agrupo aqui las pruebas relacionadas con esta parte.
 describe('Jugadores flow (E2E)', () => {
+  // preparo el entorno antes de cada prueba para que no se mezclen datos.
   beforeEach(async () => {
     window.history.replaceState({}, '', '/home');
 
@@ -16,6 +18,7 @@ describe('Jugadores flow (E2E)', () => {
     }).compileComponents();
   });
 
+  // este caso comprueba un comportamiento concreto de la aplicacion.
   it('navigates from the navbar to the players page and renders the featured roster', async () => {
     const fixture = TestBed.createComponent(App);
     const router = TestBed.inject(Router);
@@ -41,3 +44,4 @@ describe('Jugadores flow (E2E)', () => {
     expect(compiled.querySelectorAll('article.card').length).toBe(3);
   });
 });
+

@@ -1,10 +1,12 @@
-// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
+﻿// este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { TestBed } from '@angular/core/testing';
 
 import { JugadorService } from '../../services/jugador.service';
 import { JugadoresComponent } from './jugadores.component';
 
+// agrupo aqui las pruebas relacionadas con esta parte.
 describe('JugadoresComponent', () => {
+  // este caso comprueba un comportamiento concreto de la aplicacion.
   it('renderiza los jugadores recibidos desde el servicio local', async () => {
     await TestBed.configureTestingModule({
       imports: [JugadoresComponent],
@@ -42,6 +44,7 @@ describe('JugadoresComponent', () => {
     expect(compiled.textContent).toContain('#5');
   });
 
+  // este caso comprueba un comportamiento concreto de la aplicacion.
   it('renderiza varios jugadores locales', async () => {
     await TestBed.configureTestingModule({
       imports: [JugadoresComponent],
@@ -87,3 +90,4 @@ describe('JugadoresComponent', () => {
     expect(compiled.textContent).toContain('Isabela Mora');
   });
 });
+

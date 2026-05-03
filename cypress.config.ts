@@ -1,4 +1,4 @@
-// Comentario de estudiante: configuracion de Cypress para probar la web como usuario real.
+﻿// configuracion de Cypress para probar la web como usuario real.
 import { defineConfig } from 'cypress';
 
 export default defineConfig({
@@ -12,3 +12,4 @@ export default defineConfig({
   video: false,
   screenshotOnRunFailure: false,
 });
+

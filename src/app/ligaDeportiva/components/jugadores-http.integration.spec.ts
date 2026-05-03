@@ -1,4 +1,4 @@
-// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
+﻿// este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { CommonModule } from '@angular/common';
 import { Component, Injectable, OnInit, inject } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
@@ -7,6 +7,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { Player } from '../models/liga.models';
 
+// esta interfaz interna me ayuda a ordenar los datos de LaravelJugadorResponse.
 interface LaravelJugadorResponse {
   data: Array<{
     id: number;
@@ -20,15 +21,19 @@ interface LaravelJugadorResponse {
   }>;
 }
 
+// con Injectable hago que Angular pueda usar esta clase como servicio.
 @Injectable()
 class JugadorHttpIntegrationService {
+  // guardo esta referencia como propiedad para usarla dentro de la clase.
   private readonly http = inject(HttpClient);
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   getJugadores() {
     return this.http.get<LaravelJugadorResponse>('/api/jugadores');
   }
 }
 
+// aqui empieza la configuracion del componente de Angular.
 @Component({
   selector: 'app-jugadores-lista-integracion',
   imports: [CommonModule],
@@ -41,11 +46,15 @@ class JugadorHttpIntegrationService {
   `,
 })
 class JugadoresListaIntegracionComponent implements OnInit {
+  // guardo esta referencia como propiedad para usarla dentro de la clase.
   private readonly jugadorService = inject(JugadorHttpIntegrationService);
 
+  // esta variable controla informacion que se muestra en la plantilla.
   protected players: Player[] = [];
+  // esta variable controla informacion que se muestra en la plantilla.
   protected errorMessage = '';
 
+  // al iniciar el componente cargo los datos que necesita la pantalla.
   ngOnInit(): void {
     this.jugadorService.getJugadores().subscribe({
       next: (response) => {
@@ -66,9 +75,11 @@ class JugadoresListaIntegracionComponent implements OnInit {
   }
 }
 
+// agrupo aqui las pruebas relacionadas con esta parte.
 describe('JugadoresListaIntegracionComponent + JugadorHttpIntegrationService', () => {
   let httpController: HttpTestingController;
 
+  // preparo el entorno antes de cada prueba para que no se mezclen datos.
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, JugadoresListaIntegracionComponent],
@@ -78,10 +89,12 @@ describe('JugadoresListaIntegracionComponent + JugadorHttpIntegrationService', (
     httpController = TestBed.inject(HttpTestingController);
   });
 
+  // limpio lo que se haya usado en la prueba para dejar todo controlado.
   afterEach(() => {
     httpController.verify();
   });
 
+  // este caso comprueba un comportamiento concreto de la aplicacion.
   it('intercepta la peticion y simula una respuesta JSON de Laravel', () => {
     const fixture = TestBed.createComponent(JugadoresListaIntegracionComponent);
 
@@ -111,6 +124,7 @@ describe('JugadoresListaIntegracionComponent + JugadorHttpIntegrationService', (
     expect(component.players[0].team).toBe('Club Maestre');
   });
 
+  // este caso comprueba un comportamiento concreto de la aplicacion.
   it('guarda un mensaje de error cuando la peticion HTTP simulada falla', () => {
     const fixture = TestBed.createComponent(JugadoresListaIntegracionComponent);
 
@@ -128,3 +142,4 @@ describe('JugadoresListaIntegracionComponent + JugadorHttpIntegrationService', (
     expect(component.errorMessage).toBe('No se pudieron cargar los jugadores.');
   });
 });
+

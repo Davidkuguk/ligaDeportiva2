@@ -1,8 +1,9 @@
-<!-- Comentario de estudiante: esta plantilla pinta la parte visual del componente y sus datos principales. -->
+﻿<!-- esta plantilla pinta la parte visual del componente y sus datos principales. -->
 <section class="card shadow-sm border-0">
   <div class="card-body p-4">
     <h2 class="h4 colorMorado mb-3">Partidos gestionables</h2>
     <div class="table-responsive" *ngIf="matches.length; else noMatches">
+      <!-- esta tabla muestra datos en filas para que sea facil revisarlos. -->
       <table class="table align-middle mb-0">
         <thead>
           <tr>
@@ -15,16 +16,18 @@
           </tr>
         </thead>
         <tbody>
+          <!-- con este bucle Angular repite el bloque por cada elemento de la lista. -->
           <tr *ngFor="let match of matches" [class.table-warning]="selectedMatchId === match.id">
             <td>
               <strong>{{ match.localTeam }} vs {{ match.awayTeam }}</strong>
-              <div class="small text-secondary">{{ match.sport }} · {{ match.competition }} · {{ match.venue || 'Sin sede' }}</div>
+              <div class="small text-secondary">{{ match.sport }} Â· {{ match.competition }} Â· {{ match.venue || 'Sin sede' }}</div>
             </td>
             <td>{{ match.date }}</td>
             <td>{{ match.refereeName || 'Sin asignar' }}</td>
             <td>{{ match.status }}</td>
             <td>{{ match.score || '-' }}</td>
             <td>
+              <!-- este boton permite ejecutar una accion desde la pantalla. -->
               <button type="button" class="btn btn-sm btn-outline-primary" (click)="editMatch.emit(match)">Editar</button>
             </td>
           </tr>
@@ -36,3 +39,4 @@
     </ng-template>
   </div>
 </section>
+

@@ -1,4 +1,4 @@
-// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
+﻿// este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
@@ -9,21 +9,30 @@ import { ManagedMatch, MatchManagementService } from '../../services/match-manag
 import { SessionService } from '../../services/session.service';
 
 // Panel privado del arbitro, donde solo ve los partidos asignados a su usuario.
+// aqui empieza la configuracion del componente de Angular.
 @Component({
   selector: 'app-panel-arbitro',
   imports: [CommonModule, ArbitroResumenComponent, ArbitroMatchListComponent],
   templateUrl: './panel-arbitro.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// esta clase contiene la logica principal de PanelArbitroComponent.
 export class PanelArbitroComponent implements OnInit {
+  // guardo esta referencia como propiedad para usarla dentro de la clase.
   private readonly sessionService = inject(SessionService);
+  // guardo esta referencia como propiedad para usarla dentro de la clase.
   private readonly matchManagementService = inject(MatchManagementService);
+  // guardo esta referencia como propiedad para usarla dentro de la clase.
   private readonly router = inject(Router);
+  // guardo esta referencia como propiedad para usarla dentro de la clase.
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
+  // esta variable controla informacion que se muestra en la plantilla.
   protected firstName = '';
+  // esta variable controla informacion que se muestra en la plantilla.
   protected matches: ManagedMatch[] = [];
 
+  // al iniciar el componente cargo los datos que necesita la pantalla.
   async ngOnInit(): Promise<void> {
     const session = this.sessionService.getSession();
 
@@ -40,3 +49,4 @@ export class PanelArbitroComponent implements OnInit {
     this.changeDetectorRef.markForCheck();
   }
 }
+

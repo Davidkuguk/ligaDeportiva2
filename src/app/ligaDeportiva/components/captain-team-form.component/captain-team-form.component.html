@@ -1,4 +1,4 @@
-<!-- Comentario de estudiante: esta plantilla pinta la parte visual del componente y sus datos principales. -->
+﻿<!-- esta plantilla pinta la parte visual del componente y sus datos principales. -->
 <section class="card shadow-sm border-0">
   <div class="card-body p-4">
     <h2 class="h4 colorMorado mb-3">Crear equipo</h2>
@@ -6,16 +6,20 @@
       Solo los capitanes sin equipo asignado pueden crear un equipo nuevo.
     </p>
     <ng-template #formBlock>
+      <!-- este formulario recoge datos del usuario y llama al metodo del componente. -->
       <form class="row g-3" [formGroup]="form" (ngSubmit)="submit()">
         <div class="col-12">
           <label for="teamName" class="form-label">Nombre del equipo</label>
+          <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
           <input id="teamName" type="text" class="form-control" formControlName="name">
         </div>
         <div class="col-12">
           <label for="teamCompetition" class="form-label">Competicion</label>
+          <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
           <input id="teamCompetition" type="text" class="form-control" formControlName="competition">
         </div>
         <div class="col-12">
+          <!-- este boton permite ejecutar una accion desde la pantalla. -->
           <button type="submit" class="btn fondoMorado text-white registro-submit-btn" [disabled]="isSaving">
             {{ isSaving ? 'Creando equipo...' : 'Crear equipo' }}
           </button>
@@ -24,3 +28,4 @@
     </ng-template>
   </div>
 </section>
+

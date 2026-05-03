@@ -1,4 +1,4 @@
-// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
+﻿// este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { Routes } from '@angular/router';
 import { ArbitrosComponent } from './ligaDeportiva/components/arbitros.component/arbitros.component';
 import { ClasificacionesComponent } from './ligaDeportiva/components/clasificaciones.component/clasificaciones.component';
@@ -16,6 +16,7 @@ import { ResultadoComponent } from './ligaDeportiva/components/resultado.compone
 
 // Aqui se centralizan todas las rutas de la aplicacion para separar las vistas publicas
 // de los paneles privados segun el rol del usuario.
+// exporto esta constante para poder reutilizarla desde otros archivos.
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -33,3 +34,4 @@ export const routes: Routes = [
   { path: 'panel-usuario', component: PanelUsuarioComponent },
   { path: '**', redirectTo: '' },
 ];
+

@@ -1,9 +1,11 @@
-// Comentario de estudiante: prueba E2E para comprobar la aplicacion como si la usara una persona real.
+﻿// prueba E2E para comprobar la aplicacion como si la usara una persona real.
 describe('Jugadores', () => {
+  // preparo el entorno antes de cada prueba para que no se mezclen datos.
   beforeEach(() => {
     cy.clearLocalStorage();
   });
 
+  // este caso comprueba un comportamiento concreto de la aplicacion.
   it('muestra la lista publica de jugadores', () => {
     cy.visit('/jugadores');
 
@@ -13,6 +15,7 @@ describe('Jugadores', () => {
     cy.contains('#9').should('be.visible');
   });
 
+  // este caso comprueba un comportamiento concreto de la aplicacion.
   it('muestra un error controlado si el login de administrador falla', () => {
     cy.visit('/login');
     cy.get('#username').type('admin');
@@ -23,6 +26,7 @@ describe('Jugadores', () => {
     cy.get('[role="alert"]').should('be.visible').and('contain', 'No se pudo iniciar sesion.');
   });
 
+  // este caso comprueba un comportamiento concreto de la aplicacion.
   it('crea y edita un jugador desde el panel admin y lo muestra actualizado', () => {
     cy.visit('/login');
     cy.get('#username').type('admin');
@@ -60,3 +64,4 @@ describe('Jugadores', () => {
     cy.contains('#8').should('be.visible');
   });
 });
+

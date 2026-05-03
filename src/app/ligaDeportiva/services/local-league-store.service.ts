@@ -1,4 +1,4 @@
-// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
+﻿// este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { Injectable } from '@angular/core';
 
 import { LIGA_SEED_DATA } from '../data/liga.seed';
@@ -6,6 +6,7 @@ import type { RegisterPayload } from './auth.service';
 import type { ClubOption, ManagedPlayer, PlayerPayload } from './jugador.service';
 import type { ManagedMatch, MatchPayload, TeamPayload } from './match-management.service';
 
+// esta interfaz interna me ayuda a ordenar los datos de StoredUser.
 interface StoredUser {
   firstName: string;
   lastName: string;
@@ -16,6 +17,7 @@ interface StoredUser {
   createdAt: string;
 }
 
+// esta interfaz interna me ayuda a ordenar los datos de StoredTeam.
 interface StoredTeam {
   name: string;
   competition: string;
@@ -24,9 +26,13 @@ interface StoredTeam {
   players: string[];
 }
 
+// dejo esta constante separada para no escribir el mismo valor varias veces.
 const USERS_KEY = 'liga.local.users';
+// dejo esta constante separada para no escribir el mismo valor varias veces.
 const TEAMS_KEY = 'liga.local.teams';
+// dejo esta constante separada para no escribir el mismo valor varias veces.
 const MATCHES_KEY = 'liga.local.matches';
+// dejo esta constante separada para no escribir el mismo valor varias veces.
 const PLAYERS_KEY = 'liga.local.players';
 
 const DEFAULT_USERS: StoredUser[] = [
@@ -57,8 +63,11 @@ const DEFAULT_USERS: StoredUser[] = [
   },
 ];
 
+// con Injectable hago que Angular pueda usar esta clase como servicio.
 @Injectable({ providedIn: 'root' })
+// esta clase contiene la logica principal de LocalLeagueStoreService.
 export class LocalLeagueStoreService {
+  // separo esta accion en un metodo para que el componente quede mas claro.
   registerUser(payload: RegisterPayload): StoredUser {
     const users = this.getUsers();
     const username = payload.username.trim();
@@ -81,6 +90,7 @@ export class LocalLeagueStoreService {
     return user;
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   loginUser(username: string, password: string): StoredUser {
     const user = this
       .getUsers()
@@ -93,6 +103,7 @@ export class LocalLeagueStoreService {
     return user;
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   listUsers(): Array<{ username: string; name: string; tipo: string; teamName?: string }> {
     return this.getUsers().map((user) => ({
       username: user.username,
@@ -102,6 +113,7 @@ export class LocalLeagueStoreService {
     }));
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   assignUserTeam(username: string, teamName: string) {
     const users = this.getUsers();
     const userIndex = users.findIndex((user) => user.username === username);
@@ -121,10 +133,12 @@ export class LocalLeagueStoreService {
     };
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   listTeams(): StoredTeam[] {
     return this.read<StoredTeam[]>(TEAMS_KEY, LIGA_SEED_DATA.teams);
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   createTeam(payload: TeamPayload) {
     const teams = this.listTeams();
 
@@ -155,6 +169,7 @@ export class LocalLeagueStoreService {
     });
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   createMatch(payload: MatchPayload): ManagedMatch {
     const matches = this.getMatches();
     const match = this.buildMatch(String(Date.now()), payload);
@@ -163,6 +178,7 @@ export class LocalLeagueStoreService {
     return match;
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   updateMatch(id: string, payload: MatchPayload): ManagedMatch {
     const matches = this.getMatches();
     const matchIndex = matches.findIndex((match) => match.id === id);
@@ -177,6 +193,7 @@ export class LocalLeagueStoreService {
     return match;
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   listClubOptions(): ClubOption[] {
     return this.listTeams().map((team, index) => ({
       id: index + 1,
@@ -185,10 +202,12 @@ export class LocalLeagueStoreService {
     }));
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   listManagedPlayers(): ManagedPlayer[] {
     return this.read<ManagedPlayer[]>(PLAYERS_KEY, this.getSeedManagedPlayers());
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   createPlayer(payload: PlayerPayload): ManagedPlayer {
     const players = this.listManagedPlayers();
     const player = this.buildManagedPlayer(this.getNextPlayerId(players), payload);
@@ -197,6 +216,7 @@ export class LocalLeagueStoreService {
     return player;
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   updatePlayer(id: number, payload: PlayerPayload): ManagedPlayer {
     const players = this.listManagedPlayers();
     const playerIndex = players.findIndex((player) => player.id === id);
@@ -211,6 +231,7 @@ export class LocalLeagueStoreService {
     return player;
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   deletePlayer(id: number): void {
     this.write(
       PLAYERS_KEY,
@@ -218,18 +239,22 @@ export class LocalLeagueStoreService {
     );
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   private getUsers(): StoredUser[] {
     return this.read<StoredUser[]>(USERS_KEY, DEFAULT_USERS);
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   private setUsers(users: StoredUser[]): void {
     this.write(USERS_KEY, users);
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   private getMatches(): ManagedMatch[] {
     return this.read<ManagedMatch[]>(MATCHES_KEY, this.getSeedMatches());
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   private buildMatch(id: string, payload: MatchPayload): ManagedMatch {
     const referee = this.listUsers().find((user) => user.username === payload.refereeUsername);
 
@@ -249,6 +274,7 @@ export class LocalLeagueStoreService {
     };
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   private buildManagedPlayer(id: number, payload: PlayerPayload): ManagedPlayer {
     const club = this.listClubOptions().find((option) => option.id === payload.club_id);
 
@@ -263,6 +289,7 @@ export class LocalLeagueStoreService {
     };
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   private getSeedMatches(): ManagedMatch[] {
     return LIGA_SEED_DATA.results.map((result, index) => ({
       id: String(index + 1),
@@ -279,6 +306,7 @@ export class LocalLeagueStoreService {
     }));
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   private getSeedManagedPlayers(): ManagedPlayer[] {
     const clubs = this.listClubOptions();
 
@@ -297,6 +325,7 @@ export class LocalLeagueStoreService {
     });
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   private getNextPlayerId(players: ManagedPlayer[]): number {
     return players.reduce((highest, player) => Math.max(highest, player.id), 0) + 1;
   }
@@ -320,3 +349,4 @@ export class LocalLeagueStoreService {
     globalThis.localStorage?.setItem(key, JSON.stringify(value));
   }
 }
+

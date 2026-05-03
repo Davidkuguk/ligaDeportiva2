@@ -1,4 +1,4 @@
-// Comentario de estudiante: configuracion de Playwright por si se quieren ejecutar pruebas E2E alternativas.
+﻿// configuracion de Playwright por si se quieren ejecutar pruebas E2E alternativas.
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
@@ -16,3 +16,4 @@ export default defineConfig({
     timeout: 120_000,
   },
 });
+

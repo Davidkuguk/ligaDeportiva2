@@ -1,25 +1,31 @@
-<!-- Comentario de estudiante: esta plantilla pinta la parte visual del componente y sus datos principales. -->
+﻿<!-- esta plantilla pinta la parte visual del componente y sus datos principales. -->
 <main class="container py-5">
     <div class="row justify-content-center">
         <div class="col-12 col-md-8 col-lg-5">
+            <!-- separo esta seccion para organizar mejor la vista. -->
             <section class="card shadow-sm border-0">
                 <div class="card-body p-4">
                     <h1 class="h2 mb-4 colorMorado">Login</h1>
+                    <!-- este formulario recoge datos del usuario y llama al metodo del componente. -->
                     <form class="d-flex flex-column gap-3" [formGroup]="loginForm" (ngSubmit)="submit()">
                         <div>
                             <label for="username" class="form-label colorMorado">Usuario</label>
+                            <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
                             <input id="username" type="text" class="form-control" placeholder="Introduce tu usuario"
                                 formControlName="username">
                         </div>
                         <div>
                             <label for="password" class="form-label colorMorado">Contrasena</label>
+                            <!-- este campo esta conectado al formulario para guardar el valor escrito. -->
                             <input id="password" type="password" class="form-control" placeholder="Introduce tu clave"
                                 formControlName="password">
                         </div>
                         <p class="mb-0 text-secondary">
                             El acceso redirige al panel de usuario, administrador, capitan o arbitro segun el tipo guardado.
                         </p>
+                        <!-- este mensaje solo se muestra cuando se cumple la condicion de Angular. -->
                         <div *ngIf="submitError" class="alert alert-danger mb-0" role="alert">{{ submitError }}</div>
+                        <!-- este boton permite ejecutar una accion desde la pantalla. -->
                         <button type="submit" class="btn fondoMorado text-white registro-submit-btn"
                             [disabled]="isSubmitting" [attr.aria-busy]="isSubmitting">
                             <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
@@ -31,3 +37,4 @@
         </div>
     </div>
 </main>
+

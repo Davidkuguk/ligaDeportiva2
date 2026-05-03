@@ -1,4 +1,4 @@
-// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
+﻿// este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -7,27 +7,38 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { SessionService } from '../../services/session.service';
 
+// aqui empieza la configuracion del componente de Angular.
 @Component({
   selector: 'app-login.component',
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// esta clase contiene la logica principal de LoginComponent.
 export class LoginComponent {
+  // guardo esta referencia como propiedad para usarla dentro de la clase.
   private readonly formBuilder = inject(FormBuilder);
+  // guardo esta referencia como propiedad para usarla dentro de la clase.
   private readonly authService = inject(AuthService);
+  // guardo esta referencia como propiedad para usarla dentro de la clase.
   private readonly sessionService = inject(SessionService);
+  // guardo esta referencia como propiedad para usarla dentro de la clase.
   private readonly router = inject(Router);
+  // guardo esta referencia como propiedad para usarla dentro de la clase.
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
+  // esta variable controla informacion que se muestra en la plantilla.
   protected isSubmitting = false;
+  // esta variable controla informacion que se muestra en la plantilla.
   protected submitError = '';
 
+  // guardo esta referencia como propiedad para usarla dentro de la clase.
   protected readonly loginForm = this.formBuilder.nonNullable.group({
     username: ['', [Validators.required]],
     password: ['', [Validators.required]],
   });
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   protected async submit(): Promise<void> {
     this.submitError = '';
 
@@ -57,6 +68,7 @@ export class LoginComponent {
   }
 }
 
+// esta funcion auxiliar evita repetir la misma logica en varios sitios.
 function getRouteByTipo(tipo: string): string {
   // Esta funcion nos permite tener la redireccion por roles en un solo sitio.
   switch (tipo) {
@@ -71,6 +83,7 @@ function getRouteByTipo(tipo: string): string {
   }
 }
 
+// esta funcion auxiliar evita repetir la misma logica en varios sitios.
 function getErrorMessage(error: unknown): string {
   if (
     typeof error === 'object' &&
@@ -86,3 +99,4 @@ function getErrorMessage(error: unknown): string {
 
   return 'No se pudo iniciar sesion.';
 }
+

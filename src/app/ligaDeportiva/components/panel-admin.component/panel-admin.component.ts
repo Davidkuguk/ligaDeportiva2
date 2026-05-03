@@ -1,4 +1,4 @@
-// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
+﻿// este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
@@ -14,6 +14,7 @@ import { ManagedMatch, MatchManagementService, MatchPayload } from '../../servic
 import { SessionService } from '../../services/session.service';
 
 // Este panel reune las operaciones del administrador sobre partidos y usuarios.
+// aqui empieza la configuracion del componente de Angular.
 @Component({
   selector: 'app-panel-admin',
   imports: [
@@ -28,28 +29,49 @@ import { SessionService } from '../../services/session.service';
   templateUrl: './panel-admin.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// esta clase contiene la logica principal de PanelAdminComponent.
 export class PanelAdminComponent implements OnInit {
+  // guardo esta referencia como propiedad para usarla dentro de la clase.
   private readonly sessionService = inject(SessionService);
+  // guardo esta referencia como propiedad para usarla dentro de la clase.
   private readonly jugadorService = inject(JugadorService);
+  // guardo esta referencia como propiedad para usarla dentro de la clase.
   private readonly matchManagementService = inject(MatchManagementService);
+  // guardo esta referencia como propiedad para usarla dentro de la clase.
   private readonly router = inject(Router);
+  // guardo esta referencia como propiedad para usarla dentro de la clase.
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
+  // esta variable controla informacion que se muestra en la plantilla.
   protected username = '';
+  // esta variable controla informacion que se muestra en la plantilla.
   protected matches: ManagedMatch[] = [];
+  // esta variable controla informacion que se muestra en la plantilla.
   protected players: ManagedPlayer[] = [];
+  // esta variable controla informacion que se muestra en la plantilla.
   protected clubs: ClubOption[] = [];
+  // esta variable controla informacion que se muestra en la plantilla.
   protected teams: string[] = [];
+  // esta variable controla informacion que se muestra en la plantilla.
   protected referees: Array<{ username: string; name: string }> = [];
+  // esta variable controla informacion que se muestra en la plantilla.
   protected users: Array<{ username: string; name: string; tipo: string; teamName?: string }> = [];
+  // esta variable controla informacion que se muestra en la plantilla.
   protected selectedMatch: ManagedMatch | null = null;
+  // esta variable controla informacion que se muestra en la plantilla.
   protected selectedPlayer: ManagedPlayer | null = null;
+  // esta variable controla informacion que se muestra en la plantilla.
   protected isSaving = false;
+  // esta variable controla informacion que se muestra en la plantilla.
   protected isAssigningTeam = false;
+  // esta variable controla informacion que se muestra en la plantilla.
   protected isSavingPlayer = false;
+  // esta variable controla informacion que se muestra en la plantilla.
   protected deletingPlayerId: number | null = null;
+  // esta variable controla informacion que se muestra en la plantilla.
   protected errorMessage = '';
 
+  // al iniciar el componente cargo los datos que necesita la pantalla.
   async ngOnInit(): Promise<void> {
     const session = this.sessionService.getSession();
 
@@ -63,26 +85,31 @@ export class PanelAdminComponent implements OnInit {
     await this.loadData();
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   protected selectMatch(match: ManagedMatch): void {
     // Guardamos el partido pulsado para pasar el formulario a modo edicion.
     this.selectedMatch = match;
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   protected clearSelection(): void {
     // Volvemos al modo crear partido.
     this.selectedMatch = null;
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   protected selectPlayer(player: ManagedPlayer): void {
     // Guardamos el jugador elegido para editarlo en el formulario.
     this.selectedPlayer = player;
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   protected clearPlayerSelection(): void {
     // Con esto quitamos la seleccion y el formulario vuelve a modo alta.
     this.selectedPlayer = null;
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   protected async saveMatch(payload: MatchPayload): Promise<void> {
     this.isSaving = true;
     this.errorMessage = '';
@@ -122,6 +149,7 @@ export class PanelAdminComponent implements OnInit {
     }
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   protected async savePlayer(payload: PlayerPayload): Promise<void> {
     this.isSavingPlayer = true;
     this.errorMessage = '';
@@ -145,6 +173,7 @@ export class PanelAdminComponent implements OnInit {
     }
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   protected async deletePlayer(player: ManagedPlayer): Promise<void> {
     // Guardamos el id para poder desactivar solo el boton del jugador que se esta borrando.
     this.deletingPlayerId = player.id;
@@ -167,6 +196,7 @@ export class PanelAdminComponent implements OnInit {
     }
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   private async loadData(): Promise<void> {
     // Cargamos en paralelo toda la informacion necesaria para el panel.
     const [catalog, matchesResponse, players, clubs] = await Promise.all([
@@ -185,17 +215,20 @@ export class PanelAdminComponent implements OnInit {
     this.changeDetectorRef.markForCheck();
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   private async loadMatches(): Promise<void> {
     this.matches = (await this.matchManagementService.listMatches()).matches;
     this.changeDetectorRef.markForCheck();
   }
 
+  // separo esta accion en un metodo para que el componente quede mas claro.
   private async loadPlayers(): Promise<void> {
     this.players = await this.jugadorService.listManagedPlayers();
     this.changeDetectorRef.markForCheck();
   }
 }
 
+// esta funcion auxiliar evita repetir la misma logica en varios sitios.
 function getErrorMessage(error: unknown): string {
   // Intentamos leer el mensaje detallado para ensenarlo tal cual en la interfaz.
   if (
@@ -213,3 +246,4 @@ function getErrorMessage(error: unknown): string {
   // Mensaje generico de respaldo cuando no llega detalle.
   return 'No se pudo guardar el partido.';
 }
+

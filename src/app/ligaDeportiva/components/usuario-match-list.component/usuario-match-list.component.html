@@ -1,11 +1,12 @@
-<!-- Comentario de estudiante: esta plantilla pinta la parte visual del componente y sus datos principales. -->
+﻿<!-- esta plantilla pinta la parte visual del componente y sus datos principales. -->
 <section class="card shadow-sm border-0">
   <div class="card-body p-4">
     <h2 class="h4 colorMorado mb-3">Calendario del equipo</h2>
     <div class="d-flex flex-column gap-3" *ngIf="matches.length; else emptyState">
+      <!-- uso article para mostrar una tarjeta o elemento independiente. -->
       <article class="border rounded p-3" *ngFor="let match of matches">
         <strong>{{ match.localTeam }} vs {{ match.awayTeam }}</strong>
-        <div class="small text-secondary">{{ match.date }} · {{ match.competition }} · {{ match.round }}</div>
+        <div class="small text-secondary">{{ match.date }} Â· {{ match.competition }} Â· {{ match.round }}</div>
         <div class="small text-secondary">Arbitro: {{ match.refereeName || 'Sin asignar' }}</div>
         <div class="small text-secondary">Resultado: {{ match.score || 'Pendiente' }}</div>
       </article>
@@ -18,3 +19,4 @@
     </ng-template>
   </div>
 </section>
+

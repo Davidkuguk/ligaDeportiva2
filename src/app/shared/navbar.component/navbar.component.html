@@ -1,8 +1,9 @@
-<!-- Comentario de estudiante: esta plantilla pinta la parte visual del componente y sus datos principales. -->
+﻿<!-- esta plantilla pinta la parte visual del componente y sus datos principales. -->
 <nav class="navbar navbar-dark navbar-expand-md">
     <div class="container">
         <a routerLink="/home" class="navbar-brand fw-bolder fs-1 fs-md-2 p-0" (click)="closeMenu()">Liga Deportiva</a>
 
+        <!-- este boton permite ejecutar una accion desde la pantalla. -->
         <button class="navbar-toggler" type="button" aria-controls="menu" [attr.aria-expanded]="isMenuOpen"
             aria-label="Mostrar/Ocultar menu" (click)="toggleMenu()">
             <span class="navbar-toggler-icon"></span>
@@ -46,3 +47,4 @@
         </div>
     </div>
 </nav>
+
