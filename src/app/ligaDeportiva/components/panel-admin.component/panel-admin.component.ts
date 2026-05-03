@@ -8,7 +8,9 @@ import { AdminPlayerListComponent } from '../admin-player-list.component/admin-p
 import { AdminMatchFormComponent } from '../admin-match-form.component/admin-match-form.component';
 import { AdminMatchListComponent } from '../admin-match-list.component/admin-match-list.component';
 import { AdminResumenComponent } from '../admin-resumen.component/admin-resumen.component';
+import { AdminUserFormComponent } from '../admin-user-form.component/admin-user-form.component';
 import { AdminUserTeamFormComponent } from '../admin-user-team-form.component/admin-user-team-form.component';
+import { AuthService, RegisterPayload } from '../../services/auth.service';
 import { ClubOption, JugadorService, ManagedPlayer, PlayerPayload } from '../../services/jugador.service';
 import { ManagedMatch, MatchManagementService, MatchPayload } from '../../services/match-management.service';
 import { SessionService } from '../../services/session.service';
@@ -22,6 +24,7 @@ import { SessionService } from '../../services/session.service';
     AdminResumenComponent,
     AdminMatchFormComponent,
     AdminMatchListComponent,
+    AdminUserFormComponent,
     AdminUserTeamFormComponent,
     AdminPlayerFormComponent,
     AdminPlayerListComponent,
@@ -35,6 +38,8 @@ export class PanelAdminComponent implements OnInit {
   private readonly sessionService = inject(SessionService);
   // guardo esta referencia como propiedad para usarla dentro de la clase.
   private readonly jugadorService = inject(JugadorService);
+  // guardo esta referencia como propiedad para usarla dentro de la clase.
+  private readonly authService = inject(AuthService);
   // guardo esta referencia como propiedad para usarla dentro de la clase.
   private readonly matchManagementService = inject(MatchManagementService);
   // guardo esta referencia como propiedad para usarla dentro de la clase.
@@ -64,6 +69,10 @@ export class PanelAdminComponent implements OnInit {
   protected isSaving = false;
   // esta variable controla informacion que se muestra en la plantilla.
   protected isAssigningTeam = false;
+  // esta variable controla informacion que se muestra en la plantilla.
+  protected isSavingUser = false;
+  // esta variable fuerza la limpieza del formulario de usuarios tras guardar.
+  protected userFormResetToken = 0;
   // esta variable controla informacion que se muestra en la plantilla.
   protected isSavingPlayer = false;
   // esta variable controla informacion que se muestra en la plantilla.
@@ -147,6 +156,41 @@ export class PanelAdminComponent implements OnInit {
       this.errorMessage = getErrorMessage(error);
     } finally {
       this.isAssigningTeam = false;
+      this.changeDetectorRef.markForCheck();
+    }
+  }
+
+  // separo esta accion en un metodo para que el componente quede mas claro.
+  protected async createUser(payload: RegisterPayload): Promise<void> {
+    const token = this.sessionService.getSession()?.token;
+
+    if (!token) {
+      this.errorMessage = 'Debes iniciar sesion como administrador para crear usuarios.';
+      this.changeDetectorRef.markForCheck();
+      return;
+    }
+
+    this.isSavingUser = true;
+    this.errorMessage = '';
+    this.changeDetectorRef.markForCheck();
+
+    try {
+      const response = await this.authService.register(payload, token);
+
+      this.users = [
+        ...this.users,
+        {
+          username: response.user.username,
+          name: `${response.user.firstName ?? payload.firstName} ${payload.lastName}`.trim(),
+          tipo: response.user.tipo,
+          teamName: response.user.teamName,
+        },
+      ];
+      this.userFormResetToken++;
+    } catch (error) {
+      this.errorMessage = getErrorMessage(error);
+    } finally {
+      this.isSavingUser = false;
       this.changeDetectorRef.markForCheck();
     }
   }

@@ -1,0 +1,49 @@
+<section class="card shadow-sm border-0">
+  <div class="card-body p-4">
+    <h2 class="h4 colorMorado mb-3">Crear usuario</h2>
+    <form class="row g-3" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="col-12 col-md-6">
+        <label for="adminUserFirstName" class="form-label">Nombre</label>
+        <input id="adminUserFirstName" type="text" class="form-control" formControlName="firstName">
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="adminUserLastName" class="form-label">Apellidos</label>
+        <input id="adminUserLastName" type="text" class="form-control" formControlName="lastName">
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="adminUsername" class="form-label">Usuario</label>
+        <input id="adminUsername" type="text" class="form-control" formControlName="username">
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="adminUserType" class="form-label">Tipo</label>
+        <select id="adminUserType" class="form-select" formControlName="tipo">
+          <option *ngFor="let option of userTypeOptions" [value]="option.value">{{ option.label }}</option>
+        </select>
+      </div>
+      <div class="col-12">
+        <label for="adminUserTeam" class="form-label">Equipo</label>
+        <select id="adminUserTeam" class="form-select" formControlName="teamName">
+          <option value="">Sin equipo asignado</option>
+          <option *ngFor="let team of teams" [value]="team">{{ team }}</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="adminUserPassword" class="form-label">Contrasena</label>
+        <input id="adminUserPassword" type="password" class="form-control" formControlName="password">
+      </div>
+      <div class="col-12 col-md-6">
+        <label for="adminUserPasswordConfirm" class="form-label">Repetir contrasena</label>
+        <input id="adminUserPasswordConfirm" type="password" class="form-control" formControlName="passwordConfirm">
+      </div>
+      <div class="col-12" *ngIf="passwordMismatch">
+        <div class="alert alert-danger mb-0" role="alert">Las contrasenas no coinciden.</div>
+      </div>
+      <div class="col-12 d-flex gap-2">
+        <button type="submit" class="btn fondoMorado text-white registro-submit-btn" [disabled]="isSaving">
+          {{ isSaving ? 'Creando...' : 'Crear usuario' }}
+        </button>
+        <button type="button" class="btn btn-outline-secondary" [disabled]="isSaving" (click)="resetForm()">Limpiar</button>
+      </div>
+    </form>
+  </div>
+</section>

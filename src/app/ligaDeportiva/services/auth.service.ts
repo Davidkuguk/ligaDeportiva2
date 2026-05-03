@@ -1,6 +1,6 @@
 ﻿// este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
@@ -27,7 +27,9 @@ export interface RegisterResponse {
   message: string;
   user: {
     username: string;
+    firstName?: string;
     tipo: RegisterPayload['tipo'];
+    teamName?: string;
     createdAt: string;
   };
 }
@@ -53,9 +55,13 @@ export class AuthService {
   private readonly http = inject(HttpClient);
 
   // separo esta accion en un metodo para que el componente quede mas claro.
-  async register(payload: RegisterPayload): Promise<RegisterResponse> {
+  async register(payload: RegisterPayload, adminToken?: string): Promise<RegisterResponse> {
+    const options = adminToken
+      ? { headers: new HttpHeaders({ Authorization: `Bearer ${adminToken}` }) }
+      : undefined;
+
     return firstValueFrom(
-      this.http.post<RegisterResponse>(`${environment.apiUrl}/auth/register`, payload),
+      this.http.post<RegisterResponse>(`${environment.apiUrl}/auth/register`, payload, options),
     );
   }
 

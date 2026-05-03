@@ -44,6 +44,14 @@
       </app-admin-player-list>
     </div>
     <div class="col-12 col-xl-5">
+      <app-admin-user-form
+        [teams]="teams"
+        [isSaving]="isSavingUser"
+        [resetToken]="userFormResetToken"
+        (createUser)="createUser($event)">
+      </app-admin-user-form>
+    </div>
+    <div class="col-12 col-xl-7">
       <app-admin-user-team-form
         [users]="users"
         [teams]="teams"
