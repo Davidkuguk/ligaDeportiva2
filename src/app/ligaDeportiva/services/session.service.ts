@@ -1,7 +1,7 @@
 ﻿// este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { Injectable } from '@angular/core';
 
-import { LoginResponse } from './auth.service';
+import type { LoginResponse } from './auth.service';
 
 // Esta constante se usa para guardar la sesion general del usuario.
 // dejo esta constante separada para no escribir el mismo valor varias veces.

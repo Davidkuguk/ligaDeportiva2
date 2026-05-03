@@ -5,6 +5,7 @@ import { provideRouter } from '@angular/router';
 
 import { App } from './app';
 import { routes } from './app.routes';
+import { JugadorService } from './ligaDeportiva/services/jugador.service';
 
 // agrupo aqui las pruebas relacionadas con esta parte.
 describe('Jugadores flow (E2E)', () => {
@@ -14,7 +15,43 @@ describe('Jugadores flow (E2E)', () => {
 
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideRouter(routes)],
+      providers: [
+        provideRouter(routes),
+        {
+          provide: JugadorService,
+          useValue: {
+            listPlayers: jasmine.createSpy().and.resolveTo([
+              {
+                name: 'Antoni Ruiz',
+                nickname: 'Toro',
+                number: 9,
+                position: 'Delantero',
+                team: 'Azules',
+                competition: 'Liga Principal',
+                stats: ['7 goles'],
+              },
+              {
+                name: 'Isabela Mora',
+                nickname: 'Ace',
+                number: 1,
+                position: 'Tenista',
+                team: 'Monteverde',
+                competition: 'Torneo Juvenil',
+                stats: ['5 victorias'],
+              },
+              {
+                name: 'Noa Garcia',
+                nickname: 'Flash',
+                number: 11,
+                position: 'Ala',
+                team: 'Rojos',
+                competition: 'Liga Principal',
+                stats: ['4 asistencias'],
+              },
+            ]),
+          },
+        },
+      ],
     }).compileComponents();
   });
 

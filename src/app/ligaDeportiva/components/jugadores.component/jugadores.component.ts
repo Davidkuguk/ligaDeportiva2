@@ -22,7 +22,7 @@ export class JugadoresComponent implements OnInit {
   // guardo esta referencia como propiedad para usarla dentro de la clase.
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
-  // Mostramos datos locales para no depender de servicios externos.
+  // Mostramos datos iniciales mientras llega la respuesta de Laravel.
   // esta variable controla informacion que se muestra en la plantilla.
   protected players: Player[] = this.ligaDataService.getPlayers();
 

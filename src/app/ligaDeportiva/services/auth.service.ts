@@ -1,7 +1,9 @@
 ﻿// este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
-import { LocalLeagueStoreService } from './local-league-store.service';
+import { environment } from '../../../environments/environment';
 
 // esta interfaz marca la forma que tienen los datos de RegisterPayload.
 export interface RegisterPayload {
@@ -34,11 +36,13 @@ export interface RegisterResponse {
 export interface LoginResponse {
   ok: boolean;
   message: string;
+  token: string;
   user: {
     username: string;
     firstName: string;
-    tipo: RegisterPayload['tipo'];
-    teamName?: string;
+      tipo: RegisterPayload['tipo'];
+      teamName?: string;
+      token?: string;
   };
 }
 
@@ -46,36 +50,26 @@ export interface LoginResponse {
 @Injectable({ providedIn: 'root' })
 // esta clase contiene la logica principal de AuthService.
 export class AuthService {
-  // guardo esta referencia como propiedad para usarla dentro de la clase.
-  private readonly localStore = inject(LocalLeagueStoreService);
+  private readonly http = inject(HttpClient);
 
   // separo esta accion en un metodo para que el componente quede mas claro.
   async register(payload: RegisterPayload): Promise<RegisterResponse> {
-    const user = this.localStore.registerUser(payload);
-
-    return {
-      ok: true,
-      message: 'Usuario creado correctamente.',
-      user: {
-        username: user.username,
-        tipo: user.tipo,
-        createdAt: user.createdAt,
-      },
-    };
+    return firstValueFrom(
+      this.http.post<RegisterResponse>(`${environment.apiUrl}/auth/register`, payload),
+    );
   }
 
   // separo esta accion en un metodo para que el componente quede mas claro.
   async login(payload: LoginPayload): Promise<LoginResponse> {
-    const user = this.localStore.loginUser(payload.username, payload.password);
+    const response = await firstValueFrom(
+      this.http.post<LoginResponse>(`${environment.apiUrl}/auth/login`, payload),
+    );
 
     return {
-      ok: true,
-      message: 'Sesion iniciada correctamente.',
+      ...response,
       user: {
-        username: user.username,
-        firstName: user.firstName,
-        tipo: user.tipo,
-        teamName: user.teamName,
+        ...response.user,
+        token: response.token,
       },
     };
   }

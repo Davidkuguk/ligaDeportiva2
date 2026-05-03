@@ -1,30 +1,58 @@
 ﻿// este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { JugadorService } from './jugador.service';
+import { SessionService } from './session.service';
+import { environment } from '../../../environments/environment';
 
 // agrupo aqui las pruebas relacionadas con esta parte.
 describe('JugadorService', () => {
   let service: JugadorService;
+  let httpController: HttpTestingController;
 
   // preparo el entorno antes de cada prueba para que no se mezclen datos.
   beforeEach(() => {
     localStorage.clear();
 
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+    });
     service = TestBed.inject(JugadorService);
+    httpController = TestBed.inject(HttpTestingController);
   });
 
   // limpio lo que se haya usado en la prueba para dejar todo controlado.
   afterEach(() => {
     localStorage.clear();
+    httpController.verify();
   });
 
   // este caso comprueba un comportamiento concreto de la aplicacion.
   it('devuelve los jugadores iniciales adaptados al modelo de la vista publica', async () => {
-    const players = await service.listPlayers();
+    const playersPromise = service.listPlayers();
 
-    expect(players.length).toBe(3);
+    const request = httpController.expectOne(`${environment.apiUrl}/jugadores`);
+    request.flush({
+      data: [
+        {
+          id: 1,
+          nombre: 'Antoni Ruiz',
+          posicion: 'Delantero',
+          dorsal: 9,
+          club_id: 1,
+          club: {
+            id: 1,
+            nombre: 'Azules',
+            categoria: 'Liga Principal',
+          },
+        },
+      ],
+    });
+
+    const players = await playersPromise;
+
+    expect(players.length).toBe(1);
     expect(players[0]).toEqual(
       jasmine.objectContaining({
         name: 'Antoni Ruiz',
@@ -40,14 +68,39 @@ describe('JugadorService', () => {
 
   // este caso comprueba un comportamiento concreto de la aplicacion.
   it('crea un jugador y lo mantiene en el listado gestionado', async () => {
-    const player = await service.createPlayer({
+    TestBed.inject(SessionService).setSession({
+      username: 'admin',
+      firstName: 'Admin',
+      tipo: 'admin',
+      token: 'token-admin',
+    });
+
+    const playerPromise = service.createPlayer({
       nombre: 'Marta Cano',
       posicion: 'Base',
       dorsal: 12,
       club_id: 1,
     });
 
-    const players = await service.listManagedPlayers();
+    const request = httpController.expectOne(`${environment.apiUrl}/jugadores`);
+    expect(request.request.method).toBe('POST');
+    expect(request.request.headers.get('Authorization')).toBe('Bearer token-admin');
+    request.flush({
+      data: {
+        id: 4,
+        nombre: 'Marta Cano',
+        posicion: 'Base',
+        dorsal: 12,
+        club_id: 1,
+        club: {
+          id: 1,
+          nombre: 'Azules',
+          categoria: 'Liga Principal',
+        },
+      },
+    });
+
+    const player = await playerPromise;
 
     expect(player).toEqual(
       jasmine.objectContaining({
@@ -58,49 +111,77 @@ describe('JugadorService', () => {
         clubNombre: 'Azules',
       }),
     );
-    expect(players.some((candidate) => candidate.nombre === 'Marta Cano')).toBeTrue();
   });
 
   // este caso comprueba un comportamiento concreto de la aplicacion.
   it('actualiza y elimina un jugador existente', async () => {
-    const createdPlayer = await service.createPlayer({
-      nombre: 'Luis Marco',
-      posicion: 'Portero',
-      dorsal: 1,
-      club_id: 2,
+    TestBed.inject(SessionService).setSession({
+      username: 'admin',
+      firstName: 'Admin',
+      tipo: 'admin',
+      token: 'token-admin',
     });
 
-    const updatedPlayer = await service.updatePlayer(createdPlayer.id, {
+    const updatedPromise = service.updatePlayer(9, {
       nombre: 'Luis Marco',
       posicion: 'Defensa',
       dorsal: 4,
       club_id: 3,
     });
 
-    await service.deletePlayer(createdPlayer.id);
-    const players = await service.listManagedPlayers();
+    const updateRequest = httpController.expectOne(`${environment.apiUrl}/jugadores/9`);
+    expect(updateRequest.request.method).toBe('PUT');
+    updateRequest.flush({
+      data: {
+        id: 9,
+        nombre: 'Luis Marco',
+        posicion: 'Defensa',
+        dorsal: 4,
+        club_id: 3,
+        club: {
+          id: 3,
+          nombre: 'Monteverde',
+          categoria: 'Liga Principal',
+        },
+      },
+    });
+
+    const updatedPlayer = await updatedPromise;
+
+    const deletePromise = service.deletePlayer(9);
+    const deleteRequest = httpController.expectOne(`${environment.apiUrl}/jugadores/9`);
+    expect(deleteRequest.request.method).toBe('DELETE');
+    expect(deleteRequest.request.headers.get('Authorization')).toBe('Bearer token-admin');
+    deleteRequest.flush({ message: 'Jugador eliminado correctamente.' });
+
+    await deletePromise;
 
     expect(updatedPlayer).toEqual(
       jasmine.objectContaining({
-        id: createdPlayer.id,
+        id: 9,
         posicion: 'Defensa',
         dorsal: 4,
         clubNombre: 'Monteverde',
       }),
     );
-    expect(players.some((candidate) => candidate.id === createdPlayer.id)).toBeFalse();
   });
 
   // este caso comprueba un comportamiento concreto de la aplicacion.
   it('lanza un error si se intenta actualizar un jugador que no existe', async () => {
-    await expectAsync(
-      service.updatePlayer(999, {
+    const updatePromise = service.updatePlayer(999, {
         nombre: 'Jugador Fantasma',
         posicion: 'Delantero',
         dorsal: 99,
         club_id: 1,
-      }),
-    ).toBeRejectedWithError('Jugador no encontrado.');
+      });
+
+    const request = httpController.expectOne(`${environment.apiUrl}/jugadores/999`);
+    request.flush(
+      { message: 'Jugador no encontrado.' },
+      { status: 404, statusText: 'Not Found' },
+    );
+
+    await expectAsync(updatePromise).toBeRejected();
   });
 });
 
