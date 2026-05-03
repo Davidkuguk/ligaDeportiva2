@@ -1,4 +1,5 @@
-// Estas interfaces describen la forma de los datos que usamos en el frontend y en MongoDB.
+// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
+// Estas interfaces describen la forma de los datos que usamos en el frontend.
 export interface NewsItem {
   id: number;
   title: string;

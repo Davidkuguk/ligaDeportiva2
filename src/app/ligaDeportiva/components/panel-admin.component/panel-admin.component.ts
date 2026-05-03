@@ -1,15 +1,15 @@
+// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AdminPlayerAccessComponent } from '../admin-player-access.component/admin-player-access.component';
 import { AdminPlayerFormComponent } from '../admin-player-form.component/admin-player-form.component';
 import { AdminPlayerListComponent } from '../admin-player-list.component/admin-player-list.component';
 import { AdminMatchFormComponent } from '../admin-match-form.component/admin-match-form.component';
 import { AdminMatchListComponent } from '../admin-match-list.component/admin-match-list.component';
 import { AdminResumenComponent } from '../admin-resumen.component/admin-resumen.component';
 import { AdminUserTeamFormComponent } from '../admin-user-team-form.component/admin-user-team-form.component';
-import { ClubOption, JugadorApiService, ManagedPlayer, PlayerPayload } from '../../services/jugador-api.service';
+import { ClubOption, JugadorService, ManagedPlayer, PlayerPayload } from '../../services/jugador.service';
 import { ManagedMatch, MatchManagementService, MatchPayload } from '../../services/match-management.service';
 import { SessionService } from '../../services/session.service';
 
@@ -22,7 +22,6 @@ import { SessionService } from '../../services/session.service';
     AdminMatchFormComponent,
     AdminMatchListComponent,
     AdminUserTeamFormComponent,
-    AdminPlayerAccessComponent,
     AdminPlayerFormComponent,
     AdminPlayerListComponent,
   ],
@@ -31,13 +30,12 @@ import { SessionService } from '../../services/session.service';
 })
 export class PanelAdminComponent implements OnInit {
   private readonly sessionService = inject(SessionService);
-  private readonly jugadorApiService = inject(JugadorApiService);
+  private readonly jugadorService = inject(JugadorService);
   private readonly matchManagementService = inject(MatchManagementService);
   private readonly router = inject(Router);
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   protected username = '';
-  protected demoAdminKey = '';
   protected matches: ManagedMatch[] = [];
   protected players: ManagedPlayer[] = [];
   protected clubs: ClubOption[] = [];
@@ -48,7 +46,6 @@ export class PanelAdminComponent implements OnInit {
   protected selectedPlayer: ManagedPlayer | null = null;
   protected isSaving = false;
   protected isAssigningTeam = false;
-  protected isSavingDemoAdminKey = false;
   protected isSavingPlayer = false;
   protected deletingPlayerId: number | null = null;
   protected errorMessage = '';
@@ -63,7 +60,6 @@ export class PanelAdminComponent implements OnInit {
     }
 
     this.username = session.username;
-    this.demoAdminKey = this.sessionService.getDemoAdminKey();
     await this.loadData();
   }
 
@@ -134,9 +130,9 @@ export class PanelAdminComponent implements OnInit {
     try {
       // Reutilizamos el mismo formulario para crear o actualizar segun haya seleccion previa.
       if (this.selectedPlayer) {
-        await this.jugadorApiService.updatePlayer(this.selectedPlayer.id, payload);
+        await this.jugadorService.updatePlayer(this.selectedPlayer.id, payload);
       } else {
-        await this.jugadorApiService.createPlayer(payload);
+        await this.jugadorService.createPlayer(payload);
       }
 
       this.selectedPlayer = null;
@@ -156,7 +152,7 @@ export class PanelAdminComponent implements OnInit {
     this.changeDetectorRef.markForCheck();
 
     try {
-      await this.jugadorApiService.deletePlayer(player.id);
+      await this.jugadorService.deletePlayer(player.id);
 
       if (this.selectedPlayer?.id === player.id) {
         this.selectedPlayer = null;
@@ -171,22 +167,13 @@ export class PanelAdminComponent implements OnInit {
     }
   }
 
-  protected saveDemoAdminKey(key: string): void {
-    // Guardamos la clave demo en memoria y en localStorage para no tener que escribirla siempre.
-    this.isSavingDemoAdminKey = true;
-    this.demoAdminKey = key.trim();
-    this.sessionService.setDemoAdminKey(this.demoAdminKey);
-    this.isSavingDemoAdminKey = false;
-    this.changeDetectorRef.markForCheck();
-  }
-
   private async loadData(): Promise<void> {
     // Cargamos en paralelo toda la informacion necesaria para el panel.
     const [catalog, matchesResponse, players, clubs] = await Promise.all([
       this.matchManagementService.getCatalogOptions(),
       this.matchManagementService.listMatches(),
-      this.jugadorApiService.listManagedPlayers().catch(() => []),
-      this.jugadorApiService.listClubOptions().catch(() => []),
+      this.jugadorService.listManagedPlayers().catch(() => []),
+      this.jugadorService.listClubOptions().catch(() => []),
     ]);
 
     this.teams = catalog.teams;
@@ -204,13 +191,13 @@ export class PanelAdminComponent implements OnInit {
   }
 
   private async loadPlayers(): Promise<void> {
-    this.players = await this.jugadorApiService.listManagedPlayers();
+    this.players = await this.jugadorService.listManagedPlayers();
     this.changeDetectorRef.markForCheck();
   }
 }
 
 function getErrorMessage(error: unknown): string {
-  // Intentamos leer el mensaje que manda Laravel para enseñarlo tal cual en la interfaz.
+  // Intentamos leer el mensaje detallado para ensenarlo tal cual en la interfaz.
   if (
     typeof error === 'object' &&
     error !== null &&
@@ -223,6 +210,6 @@ function getErrorMessage(error: unknown): string {
     return error.error.message;
   }
 
-  // Mensaje generico de respaldo cuando no llega detalle desde el backend.
+  // Mensaje generico de respaldo cuando no llega detalle.
   return 'No se pudo guardar el partido.';
 }

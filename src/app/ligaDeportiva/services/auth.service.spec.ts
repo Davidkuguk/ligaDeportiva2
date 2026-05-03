@@ -1,92 +1,80 @@
-import { provideHttpClient } from '@angular/common/http';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { TestBed } from '@angular/core/testing';
 
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
   let service: AuthService;
-  let httpController: HttpTestingController;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting()],
-    });
+    localStorage.clear();
 
+    TestBed.configureTestingModule({});
     service = TestBed.inject(AuthService);
-    httpController = TestBed.inject(HttpTestingController);
   });
 
   afterEach(() => {
-    httpController.verify();
+    localStorage.clear();
   });
 
-  it('posts the registration payload to the register endpoint', async () => {
-    const promise = service.register({
-      firstName: 'Lucia',
-      lastName: 'Navas',
-      username: 'lucia.navas',
-      password: 'segura123',
+  it('registra un usuario y permite iniciar sesion con sus datos', async () => {
+    const registerResponse = await service.register({
+      firstName: 'Laura',
+      lastName: 'Santos',
+      username: 'laura',
+      password: '1234',
       tipo: 'jugador',
       teamName: 'Azules',
     });
 
-    const request = httpController.expectOne('/api/auth/register');
-
-    expect(request.request.method).toBe('POST');
-    expect(request.request.body).toEqual({
-      firstName: 'Lucia',
-      lastName: 'Navas',
-      username: 'lucia.navas',
-      password: 'segura123',
-      tipo: 'jugador',
-      teamName: 'Azules',
+    const loginResponse = await service.login({
+      username: 'laura',
+      password: '1234',
     });
 
-    request.flush({
-      ok: true,
-      message: 'Usuario registrado.',
-      user: {
-        username: 'lucia.navas',
+    expect(registerResponse.ok).toBeTrue();
+    expect(registerResponse.user).toEqual(
+      jasmine.objectContaining({
+        username: 'laura',
         tipo: 'jugador',
-        createdAt: '2026-04-05T20:00:00.000Z',
-      },
-    });
-
-    const response = await promise;
-
-    expect(response.ok).toBeTrue();
-    expect(response.user.username).toBe('lucia.navas');
-    expect(response.user.tipo).toBe('jugador');
+      }),
+    );
+    expect(loginResponse.user).toEqual(
+      jasmine.objectContaining({
+        username: 'laura',
+        firstName: 'Laura',
+        tipo: 'jugador',
+        teamName: 'Azules',
+      }),
+    );
   });
 
-  it('encodes login credentials as query params on the GET request', async () => {
-    const promise = service.login({
-      username: 'capitan azules',
-      password: 'clave con espacios',
+  it('rechaza usuarios duplicados sin distinguir mayusculas', async () => {
+    await service.register({
+      firstName: 'Laura',
+      lastName: 'Santos',
+      username: 'laura',
+      password: '1234',
+      tipo: 'normal',
     });
 
-    const request = httpController.expectOne(
-      '/api/auth/login?username=capitan+azules&password=clave+con+espacios',
-    );
+    await expectAsync(
+      service.register({
+        firstName: 'Otra',
+        lastName: 'Persona',
+        username: 'LAURA',
+        password: 'abcd',
+        tipo: 'normal',
+      }),
+    ).toBeRejectedWithError('Ya existe un usuario con ese nombre.');
+  });
 
-    expect(request.request.method).toBe('GET');
-
-    request.flush({
-      ok: true,
-      message: 'Sesion iniciada.',
-      user: {
-        username: 'capitan azules',
-        firstName: 'Ruben',
-        tipo: 'capitan',
-        teamName: 'Azules',
-      },
-    });
-
-    const response = await promise;
-
-    expect(response.ok).toBeTrue();
-    expect(response.user.firstName).toBe('Ruben');
-    expect(response.user.tipo).toBe('capitan');
+  it('rechaza el inicio de sesion con contrasena incorrecta', async () => {
+    await expectAsync(
+      service.login({
+        username: 'admin',
+        password: 'incorrecta',
+      }),
+    ).toBeRejectedWithError('Usuario o contrasena incorrectos.');
   });
 });

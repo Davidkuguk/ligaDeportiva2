@@ -1,10 +1,8 @@
+// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
 
-import { RegisterPayload } from './auth.service';
+import { LocalLeagueStoreService } from './local-league-store.service';
 
-// Este servicio agrupa todas las llamadas HTTP relacionadas con partidos, equipos y catalogos.
 export interface CatalogOptionsResponse {
   ok: boolean;
   teams: string[];
@@ -54,45 +52,52 @@ export interface TeamPayload {
 
 @Injectable({ providedIn: 'root' })
 export class MatchManagementService {
-  private readonly http = inject(HttpClient);
+  private readonly localStore = inject(LocalLeagueStoreService);
 
   getCatalogOptions(): Promise<CatalogOptionsResponse> {
-    return firstValueFrom(this.http.get<CatalogOptionsResponse>('/api/catalog/options'));
+    return Promise.resolve({
+      ok: true,
+      teams: this.localStore.listTeams().map((team) => team.name),
+      referees: this.localStore
+        .listUsers()
+        .filter((user) => user.tipo === 'arbitro')
+        .map((user) => ({ username: user.username, name: user.name })),
+      users: this.localStore.listUsers(),
+    });
   }
 
   listMatches(filter: { refereeUsername?: string; teamName?: string } = {}): Promise<MatchesResponse> {
-    // Construimos la query solo con los filtros que realmente se hayan indicado.
-    const query = new URLSearchParams();
-
-    if (filter.refereeUsername) {
-      query.set('refereeUsername', filter.refereeUsername);
-    }
-
-    if (filter.teamName) {
-      query.set('teamName', filter.teamName);
-    }
-
-    const suffix = query.toString() ? `?${query.toString()}` : '';
-    return firstValueFrom(this.http.get<MatchesResponse>(`/api/matches${suffix}`));
+    return Promise.resolve({
+      ok: true,
+      matches: this.localStore.listMatches(filter),
+    });
   }
 
   createMatch(payload: MatchPayload): Promise<{ ok: boolean; match: ManagedMatch }> {
-    return firstValueFrom(this.http.post<{ ok: boolean; match: ManagedMatch }>('/api/matches', payload));
+    return Promise.resolve({
+      ok: true,
+      match: this.localStore.createMatch(payload),
+    });
   }
 
   updateMatch(id: string, payload: MatchPayload): Promise<{ ok: boolean; match: ManagedMatch }> {
-    return firstValueFrom(this.http.put<{ ok: boolean; match: ManagedMatch }>(`/api/matches/${id}`, payload));
+    return Promise.resolve({
+      ok: true,
+      match: this.localStore.updateMatch(id, payload),
+    });
   }
 
   createTeam(payload: TeamPayload): Promise<{ ok: boolean; team: { name: string; competition: string; captain: string } }> {
-    return firstValueFrom(this.http.post<{ ok: boolean; team: { name: string; competition: string; captain: string } }>('/api/teams', payload));
+    return Promise.resolve({
+      ok: true,
+      team: this.localStore.createTeam(payload),
+    });
   }
 
   assignUserTeam(username: string, teamName: string): Promise<{ ok: boolean; user: CatalogOptionsResponse['users'][number] }> {
-    return firstValueFrom(
-      this.http.put<{ ok: boolean; user: CatalogOptionsResponse['users'][number] }>(`/api/users/${username}/team`, {
-        teamName,
-      }),
-    );
+    return Promise.resolve({
+      ok: true,
+      user: this.localStore.assignUserTeam(username, teamName),
+    });
   }
 }

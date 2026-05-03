@@ -1,6 +1,7 @@
+// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+
+import { LocalLeagueStoreService } from './local-league-store.service';
 
 export interface RegisterPayload {
   firstName: string;
@@ -39,19 +40,34 @@ export interface LoginResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly http = inject(HttpClient);
+  private readonly localStore = inject(LocalLeagueStoreService);
 
-  register(payload: RegisterPayload): Promise<RegisterResponse> {
-    return firstValueFrom(this.http.post<RegisterResponse>('/api/auth/register', payload));
+  async register(payload: RegisterPayload): Promise<RegisterResponse> {
+    const user = this.localStore.registerUser(payload);
+
+    return {
+      ok: true,
+      message: 'Usuario creado correctamente.',
+      user: {
+        username: user.username,
+        tipo: user.tipo,
+        createdAt: user.createdAt,
+      },
+    };
   }
 
-  login(payload: LoginPayload): Promise<LoginResponse> {
-    // En el login usamos query params porque el enunciado pide recuperar el usuario con GET.
-    const query = new URLSearchParams({
-      username: payload.username,
-      password: payload.password,
-    });
+  async login(payload: LoginPayload): Promise<LoginResponse> {
+    const user = this.localStore.loginUser(payload.username, payload.password);
 
-    return firstValueFrom(this.http.get<LoginResponse>(`/api/auth/login?${query.toString()}`));
+    return {
+      ok: true,
+      message: 'Sesion iniciada correctamente.',
+      user: {
+        username: user.username,
+        firstName: user.firstName,
+        tipo: user.tipo,
+        teamName: user.teamName,
+      },
+    };
   }
 }

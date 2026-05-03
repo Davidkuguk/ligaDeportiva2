@@ -1,3 +1,4 @@
+// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
@@ -14,7 +15,7 @@ const USER_TYPE_OPTIONS = [
   { value: 'admin', label: 'Admin' },
 ] as const;
 
-// Componente de registro conectado con MongoDB para crear usuarios reales.
+// Componente de registro con usuarios guardados en el navegador.
 @Component({
   selector: 'app-registro.component',
   imports: [CommonModule, ReactiveFormsModule],

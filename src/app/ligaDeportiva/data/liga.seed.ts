@@ -1,3 +1,4 @@
+// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { MatchResult, NewsItem, Player, Referee, Standing, Team } from '../models/liga.models';
 
 // Este tipo agrupa todos los bloques de datos que necesita la web de la liga.
@@ -10,7 +11,7 @@ export interface LigaSeedData {
   referees: Referee[];
 }
 
-// Estos datos se usan como contenido inicial y tambien como semilla para MongoDB.
+// Estos datos se usan como contenido inicial de la aplicacion.
 export const LIGA_SEED_DATA: LigaSeedData = {
   news: [
     {

@@ -1,3 +1,4 @@
+// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { Injectable } from '@angular/core';
 
 import { LIGA_SEED_DATA, LigaSeedData } from '../data/liga.seed';

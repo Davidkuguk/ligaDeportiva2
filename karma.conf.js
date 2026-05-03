@@ -1,3 +1,4 @@
+// Comentario de estudiante: configuracion de Karma para lanzar las pruebas de Angular con Jasmine.
 const path = require('node:path');
 
 module.exports = function (config) {

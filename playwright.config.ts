@@ -1,3 +1,4 @@
+// Comentario de estudiante: configuracion de Playwright por si se quieren ejecutar pruebas E2E alternativas.
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({

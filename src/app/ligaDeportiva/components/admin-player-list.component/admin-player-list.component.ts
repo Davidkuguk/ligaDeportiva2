@@ -1,7 +1,8 @@
+// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { ManagedPlayer } from '../../services/jugador-api.service';
+import { ManagedPlayer } from '../../services/jugador.service';
 
 // Este componente solo pinta la tabla y avisa al padre cuando se pulsa editar o borrar.
 @Component({

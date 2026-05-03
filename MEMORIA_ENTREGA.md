@@ -1,177 +1,76 @@
-# Memoria De Entrega UT2
+# Memoria De Entrega
 
-## 1. Descripcion General
+Este proyecto desarrolla una aplicacion web frontend para una liga deportiva escolar con Angular.
 
-Este proyecto desarrolla una aplicacion web para la Liga Deportiva del instituto con Angular, SSR con Express y persistencia en MongoDB Atlas. La aplicacion reutiliza la idea del proyecto anterior y la adapta a una estructura moderna basada en componentes, servicios, rutas y backend integrado.
+## Estructura
 
-## 2. Estructura Del Proyecto
+- `src/app`: componentes, rutas y servicios de la aplicacion.
+- `src/app/ligaDeportiva/data`: datos iniciales de la liga.
+- `src/app/ligaDeportiva/services`: servicios de sesion, datos locales y gestion de la liga.
+- `public/img`: imagenes usadas por las vistas.
 
-La aplicacion se organiza en varias capas:
+## Persistencia Local
 
-- `src/app/shared`: componentes compartidos como navbar y footer.
-- `src/app/ligaDeportiva/components`: componentes de vistas publicas y paneles por rol.
-- `src/app/ligaDeportiva/services`: servicios de autenticacion, sesion, datos y gestion de partidos.
-- `src/backend`: acceso a MongoDB, repositorios y catalogos.
-- `src/server.ts`: servidor Express con los endpoints REST y renderizado SSR.
-- `public/img`: imagenes usadas por la interfaz.
+La aplicacion guarda usuarios, equipos, partidos y jugadores en el navegador mediante `localStorage`.
 
-## 3. Componentes Implementados
+Esto permite probar registro, login, paneles por rol y gestion de partidos sin depender de ningun servicio externo.
 
-Se han creado y adaptado los siguientes componentes principales:
+## Funcionalidades
 
-- `home`
-- `noticias`
-- `equipos`
-- `jugadores`
-- `clasificaciones`
-- `arbitros`
-- `contacto`
-- `login`
-- `registro`
-- `panel-admin`
-- `panel-arbitro`
-- `panel-usuario`
-- `panel-capitan`
+- Pagina principal con noticias y resultados.
+- Listado de equipos, clasificaciones, jugadores y arbitros.
+- Registro e inicio de sesion por rol.
+- Panel de administrador para gestionar partidos, jugadores y asignaciones.
+- Panel de capitan para crear equipo y revisar partidos.
+- Panel de arbitro para gestionar partidos asignados.
 
-Ademas, se han descompuesto los paneles en subcomponentes reutilizables como:
+## Pruebas
 
-- `admin-match-form`
-- `admin-match-list`
-- `admin-user-team-form`
-- `admin-resumen`
-- `arbitro-match-list`
-- `arbitro-resumen`
-- `usuario-match-list`
-- `usuario-resumen`
-- `captain-team-form`
+El proyecto incluye pruebas unitarias y de integracion con Jasmine/Karma:
 
-## 4. Rutas Y Navegacion
+- Servicios de jugadores y autenticacion.
+- Componentes de jugadores.
+- Integracion entre componente, servicio y peticiones HTTP simuladas con `HttpClientTestingModule` y `HttpTestingController`.
 
-La aplicacion incluye rutas para las vistas publicas y los paneles privados:
+Tambien incluye pruebas E2E con Cypress en `cypress/e2e/jugadores.cy.ts`:
 
-- `/home`
-- `/equipos`
-- `/resultados`
-- `/clasificaciones`
-- `/jugadores`
-- `/arbitros`
-- `/contacto`
-- `/login`
-- `/registro`
-- `/panel-admin`
-- `/panel-arbitro`
-- `/panel-capitan`
-- `/panel-usuario`
+- Ver la lista publica de jugadores.
+- Iniciar sesion como administrador.
+- Crear un jugador desde el panel.
+- Editar el jugador creado.
+- Comprobar que el cambio aparece en el panel y en la vista publica.
 
-En el login se consulta el usuario en MongoDB y, segun su campo `tipo`, se redirige al panel correspondiente.
+## Integracion Continua
 
-## 5. Roles Y Funcionalidad
+El proyecto incluye un workflow de GitHub Actions en `.github/workflows/tests.yml`.
 
-### Administrador
+Este workflow se ejecuta automaticamente en cada `push` a `main` o `master` y en cada `pull_request`.
 
-- Puede crear partidos.
-- Puede editar partidos.
-- Puede asignar usuarios a equipos.
-- Puede consultar el catalogo general de usuarios, arbitros y equipos.
+El job `unit-and-integration-tests` instala dependencias y ejecuta:
 
-### Arbitro
+```bash
+npm run test:ci
+```
 
-- Solo visualiza los partidos en los que esta asignado como arbitro.
+Con ese comando se ejecutan las pruebas unitarias y las pruebas de integracion de Angular con Jasmine/Karma.
 
-### Capitan
+El job `e2e-and-build` se ejecuta despues, lanza las pruebas E2E con Cypress y comprueba que la aplicacion Angular compila correctamente.
 
-- Dispone de un panel propio.
-- Puede crear su equipo si todavia no tiene uno asignado.
-- Puede consultar los partidos de su equipo.
+## Ejecucion
 
-### Usuario
+```bash
+npm start
+```
 
-- Consulta solo los partidos del equipo al que pertenece.
+## Ejecucion De Pruebas
 
-## 6. MongoDB Y Persistencia
+```bash
+npm run test:ci
+npm run test:e2e
+```
 
-La persistencia se realiza con MongoDB Atlas. El proyecto usa variables de entorno:
+## Usuarios De Prueba
 
-- `MONGODB_URI`
-- `MONGODB_DB_NAME`
-- `PORT`
-
-Colecciones usadas:
-
-- `usuarios`
-- `teams`
-- `matches`
-- `results`
-- `standings`
-- `players`
-- `referees`
-- `news`
-
-Se han creado indices para mejorar las consultas y garantizar unicidad, por ejemplo:
-
-- `uniq_username`
-- `uniq_email_sparse`
-- `uniq_team_name`
-- indices de partidos por competicion, arbitro y equipos
-
-## 7. Servicio Backend
-
-El servidor Express implementa, entre otros, los siguientes endpoints:
-
-- `POST /api/auth/register`
-- `GET /api/auth/login`
-- `POST /api/auth/login`
-- `GET /api/catalog/options`
-- `POST /api/teams`
-- `PUT /api/users/:username/team`
-- `GET /api/matches`
-- `POST /api/matches`
-- `PUT /api/matches/:id`
-- `GET /api/health`
-- `GET /api/liga-data`
-- `POST /api/admin/seed`
-
-El login y el registro se conectan con MongoDB para crear y recuperar usuarios reales. La contrasena se almacena de forma cifrada mediante `scrypt`.
-
-## 8. Diseno Responsive
-
-La interfaz usa Bootstrap y CSS propio. Se han empleado:
-
-- contenedores fluidos y rejilla Bootstrap
-- columnas responsivas `col-12`, `col-md-*`, `col-lg-*`, `col-xl-*`
-- menu responsive con `navbar-expand-md`
-- media query para movil en `src/styles.css`
-
-Esto permite una visualizacion correcta al menos en dispositivos moviles, como pide el enunciado.
-
-## 9. Scripts Y Ejecucion
-
-Scripts principales del proyecto:
-
-- `npm run build`
-- `npm run test -- --watch=false`
-- `npm run serve:ssr:ligaDeportiva2`
-- `npm run seed:mongo`
-
-## 10. Verificacion Realizada
-
-Antes de la entrega se ha comprobado que:
-
-- la build del proyecto compila correctamente
-- los tests pasan
-- existe separacion por roles
-- existe panel propio para capitan
-- el login admite consulta mediante `GET`
-- MongoDB esta preparado con repositorios, indices y endpoints
-
-## 11. Material Para El PDF Final
-
-Para exportar esta memoria a PDF y completar la entrega, conviene anadir:
-
-- captura del arbol de directorios del proyecto
-- capturas del login y registro
-- capturas de panel administrador, arbitro, capitan y usuario
-- capturas en resolucion movil
-- capturas de MongoDB Atlas con el cluster y las colecciones
-
-La base tecnica y el texto explicativo ya estan preparados en este documento.
+- `admin` / `admin`
+- `celia` / `1234`
+- `ruben` / `1234`

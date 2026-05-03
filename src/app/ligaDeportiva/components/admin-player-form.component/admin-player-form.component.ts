@@ -1,8 +1,9 @@
+// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { ClubOption, ManagedPlayer, PlayerPayload } from '../../services/jugador-api.service';
+import { ClubOption, ManagedPlayer, PlayerPayload } from '../../services/jugador.service';
 
 // Formulario reutilizable para crear y editar jugadores desde el panel admin.
 @Component({
@@ -21,7 +22,7 @@ export class AdminPlayerFormComponent implements OnChanges {
   @Output() savePlayer = new EventEmitter<PlayerPayload>();
   @Output() clearSelection = new EventEmitter<void>();
 
-  // Usamos validaciones basicas para no mandar datos incoherentes al backend.
+  // Usamos validaciones basicas para no guardar datos incoherentes.
   protected readonly playerForm = this.formBuilder.nonNullable.group({
     nombre: ['', [Validators.required, Validators.minLength(2)]],
     posicion: ['', [Validators.required, Validators.minLength(2)]],

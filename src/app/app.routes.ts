@@ -1,3 +1,4 @@
+// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { Routes } from '@angular/router';
 import { ArbitrosComponent } from './ligaDeportiva/components/arbitros.component/arbitros.component';
 import { ClasificacionesComponent } from './ligaDeportiva/components/clasificaciones.component/clasificaciones.component';

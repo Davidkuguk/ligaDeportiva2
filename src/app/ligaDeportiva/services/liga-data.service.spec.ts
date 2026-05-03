@@ -1,3 +1,4 @@
+// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { TestBed } from '@angular/core/testing';
 
 import { LIGA_SEED_DATA } from '../data/liga.seed';

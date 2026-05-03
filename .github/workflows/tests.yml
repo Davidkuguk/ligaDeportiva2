@@ -1,4 +1,5 @@
-name: Frontend Tests
+# Comentario de estudiante: workflow de integracion continua para ejecutar pruebas automaticamente.
+name: Angular CI
 
 on:
   push:
@@ -11,7 +12,8 @@ permissions:
   contents: read
 
 jobs:
-  test-and-build:
+  unit-and-integration-tests:
+    name: Unit and integration tests
     runs-on: ubuntu-latest
 
     steps:
@@ -30,8 +32,29 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run Jasmine/Karma unit and integration tests
+      - name: Run Jasmine/Karma unit tests and integration tests
         run: npm run test:ci
+
+  e2e-and-build:
+    name: E2E tests and build
+    runs-on: ubuntu-latest
+    needs: unit-and-integration-tests
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run Cypress E2E tests
         uses: cypress-io/github-action@v6

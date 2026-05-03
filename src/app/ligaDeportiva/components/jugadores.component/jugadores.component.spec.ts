@@ -1,17 +1,17 @@
+// Comentario de estudiante: este archivo forma parte de la aplicacion Angular y dejo anotado para que se entienda mejor su funcion.
 import { TestBed } from '@angular/core/testing';
 
-import { JugadorApiService } from '../../services/jugador-api.service';
+import { JugadorService } from '../../services/jugador.service';
 import { JugadoresComponent } from './jugadores.component';
 
 describe('JugadoresComponent', () => {
-  it('renderiza los jugadores recibidos desde la API', async () => {
+  it('renderiza los jugadores recibidos desde el servicio local', async () => {
     await TestBed.configureTestingModule({
       imports: [JugadoresComponent],
       providers: [
         {
-          provide: JugadorApiService,
+          provide: JugadorService,
           useValue: {
-            // Simulamos que la API devuelve un unico jugador.
             listPlayers: jasmine.createSpy().and.resolveTo([
               {
                 name: 'Alvaro Prieto',
@@ -28,7 +28,6 @@ describe('JugadoresComponent', () => {
       ],
     }).compileComponents();
 
-    // Creamos el componente real y dejamos que termine la carga asincrona.
     const fixture = TestBed.createComponent(JugadoresComponent);
 
     fixture.detectChanges();
@@ -43,15 +42,33 @@ describe('JugadoresComponent', () => {
     expect(compiled.textContent).toContain('#5');
   });
 
-  it('mantiene la lista semilla cuando falla la API', async () => {
+  it('renderiza varios jugadores locales', async () => {
     await TestBed.configureTestingModule({
       imports: [JugadoresComponent],
       providers: [
         {
-          provide: JugadorApiService,
+          provide: JugadorService,
           useValue: {
-            // Fuerza un error para comprobar el comportamiento de respaldo.
-            listPlayers: jasmine.createSpy().and.rejectWith(new Error('API unavailable')),
+            listPlayers: jasmine.createSpy().and.resolveTo([
+              {
+                name: 'Antoni Ruiz',
+                nickname: 'Toro',
+                number: 9,
+                position: 'Delantero',
+                team: 'Azules',
+                competition: 'Liga Principal',
+                stats: ['7 goles'],
+              },
+              {
+                name: 'Isabela Mora',
+                nickname: 'Ace',
+                number: 1,
+                position: 'Tenista',
+                team: 'Monteverde',
+                competition: 'Torneo Juvenil',
+                stats: ['5 victorias'],
+              },
+            ]),
           },
         },
       ],
@@ -64,13 +81,9 @@ describe('JugadoresComponent', () => {
     fixture.detectChanges();
 
     const compiled = fixture.nativeElement as HTMLElement;
-    // Leemos las estadisticas en forma de lista para comprobar que se ven los datos semilla.
-    const statItems = Array.from(compiled.querySelectorAll('li')).map((item) => item.textContent?.trim());
 
-    expect(compiled.querySelectorAll('article.card').length).toBe(3);
+    expect(compiled.querySelectorAll('article.card').length).toBe(2);
     expect(compiled.textContent).toContain('Antoni Ruiz');
-    expect(statItems).toContain('7 goles');
-    expect(statItems).toContain('84% de primeros saques');
-    expect(statItems).toContain('12 recuperaciones');
+    expect(compiled.textContent).toContain('Isabela Mora');
   });
 });

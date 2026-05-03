@@ -1,39 +1,62 @@
-// En esta prueba usamos datos simulados para no depender de la API real.
-describe('Modulo de jugadores', () => {
-  it('caso exitoso: muestra el listado actualizado de jugadores', () => {
-    cy.fixture('jugadores-publicos.json').then((jugadores) => {
-      cy.intercept('GET', '**/api/jugadores', {
-        statusCode: 200,
-        body: {
-          data: jugadores,
-        },
-      }).as('getJugadores');
-    });
-
-    cy.visit('/jugadores');
-    cy.wait('@getJugadores');
-
-    cy.contains('h1', 'Jugadores').should('be.visible');
-    cy.contains('Alvaro Prieto').should('be.visible');
-    cy.contains('Club Maestre').should('be.visible');
-    cy.contains('#5').should('be.visible');
-    cy.contains('Lucia Navas').should('be.visible');
+// Comentario de estudiante: prueba E2E para comprobar la aplicacion como si la usara una persona real.
+describe('Jugadores', () => {
+  beforeEach(() => {
+    cy.clearLocalStorage();
   });
 
-  it('caso de error controlado: si falla la API se mantiene el listado semilla', () => {
-    cy.intercept('GET', '**/api/jugadores', {
-      statusCode: 500,
-      body: {
-        message: 'No se pudo cargar la lista de jugadores.',
-      },
-    }).as('getJugadoresError');
-
+  it('muestra la lista publica de jugadores', () => {
     cy.visit('/jugadores');
-    cy.wait('@getJugadoresError');
 
     cy.contains('h1', 'Jugadores').should('be.visible');
     cy.contains('Antoni Ruiz').should('be.visible');
-    cy.contains('Toro').should('be.visible');
+    cy.contains('Azules').should('be.visible');
     cy.contains('#9').should('be.visible');
+  });
+
+  it('muestra un error controlado si el login de administrador falla', () => {
+    cy.visit('/login');
+    cy.get('#username').type('admin');
+    cy.get('#password').type('clave-incorrecta');
+    cy.contains('button', 'Entrar').click();
+
+    cy.location('pathname').should('eq', '/login');
+    cy.get('[role="alert"]').should('be.visible').and('contain', 'No se pudo iniciar sesion.');
+  });
+
+  it('crea y edita un jugador desde el panel admin y lo muestra actualizado', () => {
+    cy.visit('/login');
+    cy.get('#username').type('admin');
+    cy.get('#password').type('admin');
+    cy.contains('button', 'Entrar').click();
+
+    cy.location('pathname').should('eq', '/panel-admin');
+
+    cy.get('#playerName').type('Marta E2E');
+    cy.get('#playerPosition').type('Base');
+    cy.get('#playerNumber').clear().type('12');
+    cy.get('#playerClub').select(1);
+    cy.contains('button', 'Crear jugador').click();
+
+    cy.contains('tr', 'Marta E2E').within(() => {
+      cy.contains('Base').should('be.visible');
+      cy.contains('#12').should('be.visible');
+      cy.contains('Azules').should('be.visible');
+      cy.contains('button', 'Editar').click();
+    });
+
+    cy.get('#playerPosition').clear().type('Escolta');
+    cy.get('#playerNumber').clear().type('8');
+    cy.contains('button', 'Actualizar jugador').click();
+
+    cy.contains('tr', 'Marta E2E').within(() => {
+      cy.contains('Escolta').should('be.visible');
+      cy.contains('#8').should('be.visible');
+    });
+
+    cy.visit('/jugadores');
+
+    cy.contains('Marta E2E').should('be.visible');
+    cy.contains('Azules').should('be.visible');
+    cy.contains('#8').should('be.visible');
   });
 });

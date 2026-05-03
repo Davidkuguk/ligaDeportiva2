@@ -1,3 +1,4 @@
+<!-- Comentario de estudiante: esta plantilla pinta la parte visual del componente y sus datos principales. -->
 <main class="container py-5">
   <div class="row g-4">
     <div class="col-12">
@@ -22,13 +23,6 @@
         [selectedMatchId]="selectedMatch?.id ?? null"
         (editMatch)="selectMatch($event)">
       </app-admin-match-list>
-    </div>
-    <div class="col-12 col-xl-5">
-      <app-admin-player-access
-        [currentKey]="demoAdminKey"
-        [isSaving]="isSavingDemoAdminKey"
-        (saveKey)="saveDemoAdminKey($event)">
-      </app-admin-player-access>
     </div>
     <div class="col-12 col-xl-5">
       <app-admin-player-form
