@@ -13,7 +13,6 @@ const USER_TYPE_OPTIONS = [
   { value: 'arbitro', label: 'Arbitro' },
   { value: 'entrenador', label: 'Entrenador' },
   { value: 'aficionado', label: 'Aficionado' },
-  { value: 'admin', label: 'Admin' },
 ] as const;
 
 // Componente de registro con usuarios guardados en el navegador.
