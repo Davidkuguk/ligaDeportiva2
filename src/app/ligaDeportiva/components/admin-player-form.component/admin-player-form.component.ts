@@ -24,6 +24,8 @@ export class AdminPlayerFormComponent implements OnChanges {
   @Input() selectedPlayer: ManagedPlayer | null = null;
   // esta propiedad comunica datos entre este componente y su componente padre.
   @Input() isSaving = false;
+  // esta propiedad cambia cuando el panel padre necesita limpiar el formulario.
+  @Input() resetToken = 0;
 
   // esta propiedad comunica datos entre este componente y su componente padre.
   @Output() savePlayer = new EventEmitter<PlayerPayload>();
@@ -41,8 +43,8 @@ export class AdminPlayerFormComponent implements OnChanges {
 
   // separo esta accion en un metodo para que el componente quede mas claro.
   ngOnChanges(changes: SimpleChanges): void {
-    // Si el jugador seleccionado cambia, rellenamos el formulario con sus datos.
-    if (changes['selectedPlayer']) {
+    // Si cambia el jugador seleccionado o llega una orden de limpieza, actualizamos el formulario.
+    if (changes['selectedPlayer'] || changes['resetToken']) {
       this.patchForm();
     }
   }
@@ -63,6 +65,11 @@ export class AdminPlayerFormComponent implements OnChanges {
   protected resetForm(): void {
     // Avisamos al padre de que ya no estamos editando ningun jugador.
     this.clearSelection.emit();
+    this.resetFields();
+  }
+
+  // separo esta accion en un metodo para que el componente quede mas claro.
+  private resetFields(): void {
     this.playerForm.reset({
       nombre: '',
       posicion: '',
@@ -75,7 +82,7 @@ export class AdminPlayerFormComponent implements OnChanges {
   private patchForm(): void {
     if (!this.selectedPlayer) {
       // Si no hay jugador seleccionado, volvemos al modo de alta.
-      this.resetForm();
+      this.resetFields();
       return;
     }
 

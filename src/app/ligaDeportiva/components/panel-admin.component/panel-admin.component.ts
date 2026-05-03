@@ -68,6 +68,8 @@ export class PanelAdminComponent implements OnInit {
   protected isSavingPlayer = false;
   // esta variable controla informacion que se muestra en la plantilla.
   protected deletingPlayerId: number | null = null;
+  // esta variable fuerza la limpieza del formulario de jugadores tras guardar.
+  protected playerFormResetToken = 0;
   // esta variable controla informacion que se muestra en la plantilla.
   protected errorMessage = '';
 
@@ -164,6 +166,7 @@ export class PanelAdminComponent implements OnInit {
       }
 
       this.selectedPlayer = null;
+      this.playerFormResetToken++;
       await this.loadPlayers();
     } catch (error) {
       this.errorMessage = getErrorMessage(error);
