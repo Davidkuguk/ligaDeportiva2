@@ -35,13 +35,20 @@
                     <a routerLink="/contacto" routerLinkActive="active" class="nav-link text-reset"
                         (click)="closeMenu()">Contacto</a>
                 </li>
-                <li class="nav-item ms-md-3 mt-2 mt-md-0">
+                <li class="nav-item ms-md-3 mt-2 mt-md-0" *ngIf="!session">
                     <a routerLink="/login" routerLinkActive="active"
                         class="btn fondoAmarillo colorMorado fw-semibold px-3" (click)="closeMenu()">Login</a>
                 </li>
-                <li class="nav-item ms-md-2 mt-2 mt-md-0">
+                <li class="nav-item ms-md-2 mt-2 mt-md-0" *ngIf="!session">
                     <a routerLink="/registro" routerLinkActive="active"
                         class="btn btn-outline-light fw-semibold px-3" (click)="closeMenu()">Registro</a>
+                </li>
+                <li class="nav-item ms-md-3 mt-2 mt-md-0" *ngIf="session">
+                    <a [routerLink]="dashboardRoute" routerLinkActive="active"
+                        class="btn fondoAmarillo colorMorado fw-semibold px-3" (click)="closeMenu()">Dashboard</a>
+                </li>
+                <li class="nav-item ms-md-2 mt-2 mt-md-0" *ngIf="session">
+                    <button type="button" class="btn btn-outline-light fw-semibold px-3" (click)="logout()">Desconectar</button>
                 </li>
             </ul>
         </div>

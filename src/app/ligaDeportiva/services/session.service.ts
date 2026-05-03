@@ -6,6 +6,7 @@ import type { LoginResponse } from './auth.service';
 // Esta constante se usa para guardar la sesion general del usuario.
 // dejo esta constante separada para no escribir el mismo valor varias veces.
 const SESSION_STORAGE_KEY = 'liga.session';
+const SESSION_CHANGED_EVENT = 'liga-session-changed';
 
 export type UserSession = LoginResponse['user'];
 
@@ -36,6 +37,7 @@ export class SessionService {
   setSession(session: UserSession): void {
     // Guardamos la sesion convertida a JSON para poder recuperarla despues.
     globalThis.localStorage?.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
+    this.notifySessionChanged();
   }
 
   // separo esta accion en un metodo para que el componente quede mas claro.
@@ -57,7 +59,15 @@ export class SessionService {
   clearSession(): void {
     // Al cerrar sesion borramos la informacion guardada.
     globalThis.localStorage?.removeItem(SESSION_STORAGE_KEY);
+    this.notifySessionChanged();
+  }
+
+  // separo esta accion en un metodo para que el componente quede mas claro.
+  private notifySessionChanged(): void {
+    globalThis.dispatchEvent?.(new Event(SESSION_CHANGED_EVENT));
   }
 
 }
+
+export { SESSION_CHANGED_EVENT };
 
