@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: liga-deportiva-front
+    runtime: static
+    plan: free
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist/ligaDeportiva2/browser
+    routes:
+      - type: redirect
+        source: /
+        destination: /home
+      - type: rewrite
+        source: /*
+        destination: /index.html
