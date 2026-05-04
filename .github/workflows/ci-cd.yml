@@ -1,0 +1,135 @@
+name: CI/CD Render
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  BACKEND_DIR: backend
+
+jobs:
+  frontend:
+    name: Frontend tests and build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout frontend
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Run frontend unit and integration tests
+        run: npm run test:ci
+
+      - name: Run frontend E2E tests
+        uses: cypress-io/github-action@v6
+        with:
+          install: false
+          start: npm start -- --host 127.0.0.1 --port 4200
+          wait-on: http://127.0.0.1:4200
+          browser: chrome
+
+      - name: Build frontend production bundle
+        run: npm run build
+
+  backend:
+    name: Backend tests
+    runs-on: ubuntu-latest
+
+    env:
+      APP_ENV: testing
+      DB_CONNECTION: sqlite
+      DB_DATABASE: ':memory:'
+      DATABASE_URL: ''
+      DB_URL: ''
+
+    steps:
+      - name: Checkout backend
+        uses: actions/checkout@v4
+        with:
+          repository: Davidkuguk/ligaDeportiva-backend
+          path: ${{ env.BACKEND_DIR }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: dom, curl, fileinfo, libxml, mbstring, pcntl, pdo, sqlite, pdo_sqlite, zip
+          coverage: none
+
+      - name: Install backend dependencies
+        working-directory: ${{ env.BACKEND_DIR }}
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Prepare Laravel environment
+        working-directory: ${{ env.BACKEND_DIR }}
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Check backend coding style
+        working-directory: ${{ env.BACKEND_DIR }}
+        run: vendor/bin/pint --test
+
+      - name: Run backend tests
+        working-directory: ${{ env.BACKEND_DIR }}
+        run: php artisan test
+
+  deploy:
+    name: Deploy frontend and backend to Render
+    runs-on: ubuntu-latest
+    needs:
+      - frontend
+      - backend
+    if: ${{ github.event_name == 'push' }}
+
+    steps:
+      - name: Validate Render secrets
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_FRONTEND_SERVICE_ID: ${{ secrets.RENDER_FRONTEND_SERVICE_ID }}
+          RENDER_BACKEND_SERVICE_ID: ${{ secrets.RENDER_BACKEND_SERVICE_ID }}
+        run: |
+          test -n "$RENDER_API_KEY"
+          test -n "$RENDER_FRONTEND_SERVICE_ID"
+          test -n "$RENDER_BACKEND_SERVICE_ID"
+
+      - name: Trigger backend deploy
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_BACKEND_SERVICE_ID: ${{ secrets.RENDER_BACKEND_SERVICE_ID }}
+        run: |
+          curl --fail --show-error --silent \
+            --request POST "https://api.render.com/v1/services/${RENDER_BACKEND_SERVICE_ID}/deploys" \
+            --header "Authorization: Bearer ${RENDER_API_KEY}" \
+            --header "Content-Type: application/json" \
+            --data '{"clearCache":"do_not_clear"}'
+
+      - name: Trigger frontend deploy
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_FRONTEND_SERVICE_ID: ${{ secrets.RENDER_FRONTEND_SERVICE_ID }}
+        run: |
+          curl --fail --show-error --silent \
+            --request POST "https://api.render.com/v1/services/${RENDER_FRONTEND_SERVICE_ID}/deploys" \
+            --header "Authorization: Bearer ${RENDER_API_KEY}" \
+            --header "Content-Type: application/json" \
+            --data '{"clearCache":"do_not_clear"}'
